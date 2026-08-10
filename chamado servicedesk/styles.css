@@ -363,6 +363,22 @@ section p {
   line-height: 1.35;
 }
 
+.contact-details {
+  margin-bottom: 12px;
+  color: #202080;
+  font-size: 0.72rem;
+  line-height: 1.4;
+}
+
+.contact-details p {
+  margin-bottom: 3px;
+}
+
+.contact-details a {
+  overflow-wrap: anywhere;
+  font-weight: 700;
+}
+
 .distribution-centers {
   margin: 0;
   padding: 12px 0 0;
