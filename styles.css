@@ -129,6 +129,10 @@ section {
   transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
 }
 
+main > section {
+  position: relative;
+}
+
 @media (hover: hover) {
   main > section:hover {
     transform: translateY(-4px);
@@ -166,6 +170,9 @@ section p {
   cursor: pointer;
   font-weight: 700;
   list-style: none;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms ease;
 }
 
 .content-toggle summary::-webkit-details-marker {
@@ -183,6 +190,18 @@ section p {
 
 .content-toggle[open] summary::after {
   content: "−";
+}
+
+@media (hover: hover) {
+  main > section:hover .content-toggle summary {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+.content-toggle summary:focus-visible {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .toggle-content {
@@ -348,7 +367,7 @@ section p {
   margin: 0;
   padding: 12px 0 0;
   border-top: 1px solid #202080;
-  color: #3f4c43;
+  color: #202080;
   font-size: 0.72rem;
   line-height: 1.4;
   list-style: none;
