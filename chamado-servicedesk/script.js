@@ -3,12 +3,12 @@
 const organogramUpdatedAt = '12/08/2026';
 
 const leadershipMembers = [
-  { initials: 'AB', name: 'Alex Borba', role: 'Gerente Regional de CDs', image: 'imagens/org-alex.png' },
+  { initials: 'AB', name: 'Alex Borba', role: 'Gerente Regional de CDs', image: 'imagens/org-alex.webp' },
   {
     initials: 'FL',
     name: 'Fabiano Lechinski',
     role: 'Coordenador Administrativo',
-    image: 'imagens/org-fabiano.png',
+    image: 'imagens/org-fabiano.webp',
   },
 ];
 
@@ -18,7 +18,7 @@ const teamMembers = [
     name: 'Thayane Morlus',
     ramal: '47 3241 8564 (8291 - 8564)',
     email: 'thayane.afonso@seara.com.br',
-    image: 'imagens/org-thayane.png',
+    image: 'imagens/org-thayane.webp',
     centers: [
       '178.692 — Campinas - CD',
       '178.963 — Ribeirão Preto - CD',
@@ -33,7 +33,7 @@ const teamMembers = [
     name: 'Bruno Werner',
     ramal: '47 3241 8515 (8291 - 8515)',
     email: 'bruno.werner@seara.com.br',
-    image: 'imagens/org-bruno.png',
+    image: 'imagens/org-bruno.webp',
     centers: [
       '30.570 — Itajaí Armazém',
       '30.572 — Itajaí Fatiados',
@@ -46,7 +46,7 @@ const teamMembers = [
     name: 'Sandro Pereira',
     ramal: '47 3241 1116 (8291 - 1116)',
     email: 'sandro.pereira@seara.com.br',
-    image: 'imagens/org-sandro.png',
+    image: 'imagens/org-sandro.webp',
     centers: ['Atendimento e suporte à equipe de Compras.'],
   },
   {
@@ -54,7 +54,7 @@ const teamMembers = [
     name: 'Vitor Cruz',
     ramal: '47 3241 1174 (8291 - 1174)',
     email: 'vitor.antunes@seara.com.br',
-    image: 'imagens/org-vitor.png',
+    image: 'imagens/org-vitor.webp',
     centers: [
       '178.676 — Cabo Santo Agostinho - CD',
       '178.356 — Aquiraz - CD',
@@ -89,7 +89,7 @@ function renderLeadership() {
       (member) => `
       <article class="team-member leadership-member" role="listitem">
         <div class="avatar" aria-hidden="true">${member.image
-          ? `<img src="${escapeHtml(member.image)}" alt="" />`
+          ? `<img src="${escapeHtml(member.image)}" alt="" width="64" height="64" loading="lazy" decoding="async" />`
           : escapeHtml(member.initials)}</div>
         <h3>${escapeHtml(member.name)}</h3>
         <p>${escapeHtml(member.role)}</p>
@@ -114,7 +114,7 @@ function renderOrganogram() {
         <div class="team-member-content">
           <div class="team-member-front" aria-hidden="false">
             <div class="avatar" aria-hidden="true">${member.image
-              ? `<img src="${escapeHtml(member.image)}" alt="" />`
+              ? `<img src="${escapeHtml(member.image)}" alt="" width="64" height="64" loading="lazy" decoding="async" />`
               : escapeHtml(member.initials)}</div>
             <h3>${escapeHtml(member.name)}</h3>
             <div class="contact-details">
@@ -123,7 +123,8 @@ function renderOrganogram() {
             </div>
           </div>
           <div class="team-member-back" id="${unitsId}" aria-hidden="true" inert>
-            <h3>Unidades atendidas</h3>
+            <h3>${escapeHtml(member.name)}</h3>
+            <p class="team-member-back-label">Unidades atendidas</p>
             <ul class="distribution-centers">${centers}</ul>
           </div>
         </div>
@@ -181,6 +182,7 @@ if (organogramDialog && openOrganogramButton && closeOrganogramButton) {
     }
 
     organogramDialog.removeAttribute('open');
+    resetTeamMembers();
   });
 
   organogramDialog.addEventListener('click', (event) => {
@@ -189,12 +191,19 @@ if (organogramDialog && openOrganogramButton && closeOrganogramButton) {
         organogramDialog.close();
       } else {
         organogramDialog.removeAttribute('open');
+        resetTeamMembers();
       }
     }
   });
 }
 
 const organogram = document.querySelector('.organogram');
+
+function resetTeamMembers() {
+  organogram?.querySelectorAll('.team-member.is-flipped').forEach((card) => {
+    toggleTeamMember(card);
+  });
+}
 
 function toggleTeamMember(card) {
   if (card) {
@@ -217,6 +226,8 @@ organogram?.addEventListener('click', (event) => {
   if (event.target.closest('a')) return;
   toggleTeamMember(event.target.closest('.team-member'));
 });
+
+organogramDialog?.addEventListener('close', resetTeamMembers);
 
 renderLeadership();
 renderOrganogram();
