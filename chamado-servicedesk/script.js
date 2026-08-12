@@ -1,6 +1,6 @@
 'use strict';
 
-const organogramUpdatedAt = '12/08/2026';
+const organogramUpdatedAt = '2026-08-12';
 
 const leadershipMembers = [
   { initials: 'AB', name: 'Alex Borba', role: 'Gerente Regional de CDs', image: 'imagens/org-alex.webp' },
@@ -35,8 +35,8 @@ const teamMembers = [
     email: 'bruno.werner@seara.com.br',
     image: 'imagens/org-bruno.webp',
     centers: [
-      '30.570 — Itajaí Armazém',
-      '30.572 — Itajaí Fatiados',
+      '30.570 — Itajaí (Armazém)',
+      '30.572 — Itajaí (Fatiados)',
       '30.573 — Itajaí (CD)',
       '30.733 — Cambé (CD)',
     ],
@@ -55,6 +55,7 @@ const teamMembers = [
     ramal: '47 3241 1174 (8291 - 1174)',
     email: 'vitor.antunes@seara.com.br',
     image: 'imagens/org-vitor.webp',
+    compact: true,
     centers: [
       '178.676 — Cabo Santo Agostinho (CD)',
       '178.356 — Aquiraz (CD)',
@@ -80,6 +81,47 @@ function escapeHtml(value) {
   })[char]);
 }
 
+function slugify(value) {
+  return String(value)
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+function renderAvatar(member) {
+  const initials = escapeHtml(member.initials);
+  if (!member.image) return initials;
+
+  return `
+    <img
+      src="${escapeHtml(member.image)}"
+      alt=""
+      width="64"
+      height="64"
+      loading="lazy"
+      decoding="async"
+      data-avatar-image
+    />
+    <span data-avatar-fallback hidden>${initials}</span>`;
+}
+
+function enableAvatarFallbacks(container) {
+  container.querySelectorAll('[data-avatar-image]').forEach((image) => {
+    const showFallback = () => {
+      image.hidden = true;
+      image.nextElementSibling.hidden = false;
+    };
+
+    image.addEventListener('error', showFallback, { once: true });
+
+    if (image.complete && image.naturalWidth === 0) {
+      showFallback();
+    }
+  });
+}
+
 function renderLeadership() {
   const container = document.querySelector('.leadership');
   if (!container) return;
@@ -88,14 +130,14 @@ function renderLeadership() {
     .map(
       (member) => `
       <article class="team-member leadership-member" role="listitem">
-        <div class="avatar" aria-hidden="true">${member.image
-          ? `<img src="${escapeHtml(member.image)}" alt="" width="64" height="64" loading="lazy" decoding="async" />`
-          : escapeHtml(member.initials)}</div>
+        <div class="avatar" aria-hidden="true">${renderAvatar(member)}</div>
         <h3>${escapeHtml(member.name)}</h3>
         <p>${escapeHtml(member.role)}</p>
       </article>`
     )
     .join('');
+
+  enableAvatarFallbacks(container);
 }
 
 function renderOrganogram() {
@@ -104,26 +146,24 @@ function renderOrganogram() {
 
   container.innerHTML = [...teamMembers]
     .sort((first, second) => teamDisplayOrder.indexOf(first.name) - teamDisplayOrder.indexOf(second.name))
-    .map((member, index) => {
+    .map((member) => {
       const centers = member.centers
         .map((center) => `<li>${escapeHtml(center)}</li>`)
         .join('');
-      const compactClass = member.centers.length >= 8 ? ' team-member--compact' : '';
-      const unitsId = `unidades-${index + 1}`;
+      const compactClass = member.compact ? ' team-member--compact' : '';
+      const unitsId = `unidades-${slugify(member.name)}`;
       return `
       <article class="team-member${compactClass}" role="listitem">
         <div class="team-member-content">
           <div class="team-member-front" aria-hidden="false">
-            <div class="avatar" aria-hidden="true">${member.image
-              ? `<img src="${escapeHtml(member.image)}" alt="" width="64" height="64" loading="lazy" decoding="async" />`
-              : escapeHtml(member.initials)}</div>
+            <div class="avatar" aria-hidden="true">${renderAvatar(member)}</div>
             <h3>${escapeHtml(member.name)}</h3>
             <div class="contact-details">
               <p>Ramal: ${escapeHtml(member.ramal)}</p>
               <a href="mailto:${escapeHtml(member.email)}">${escapeHtml(member.email)}</a>
             </div>
           </div>
-          <div class="team-member-back" id="${unitsId}" aria-hidden="true" aria-live="polite" inert>
+          <div class="team-member-back" id="${unitsId}" aria-hidden="true" inert>
             <h3>${escapeHtml(member.name)}</h3>
             <p class="team-member-back-label">Unidades atendidas</p>
             <ul class="distribution-centers">${centers}</ul>
@@ -132,9 +172,12 @@ function renderOrganogram() {
         <button class="flip-hint" type="button" data-team-toggle aria-expanded="false" aria-controls="${unitsId}">
           <span>Ver unidades atendidas</span>
         </button>
+        <span class="visually-hidden" data-team-status aria-live="polite"></span>
       </article>`;
     })
     .join('');
+
+  enableAvatarFallbacks(container);
 }
 
 const organogramDialog = document.querySelector('#organogram-dialog');
@@ -143,9 +186,9 @@ const closeOrganogramButton = document.querySelector('[data-organogram-close]');
 const organogramUpdatedText = document.querySelector('[data-organogram-updated]');
 
 if (organogramUpdatedText) {
-  const [day, month, year] = organogramUpdatedAt.split('/');
-  organogramUpdatedText.dateTime = `${year}-${month}-${day}`;
-  organogramUpdatedText.textContent = organogramUpdatedAt;
+  const [year, month, day] = organogramUpdatedAt.split('-');
+  organogramUpdatedText.dateTime = organogramUpdatedAt;
+  organogramUpdatedText.textContent = `${day}/${month}/${year}`;
 }
 
 document.querySelectorAll('main > section').forEach((section) => {
@@ -202,17 +245,19 @@ const organogram = document.querySelector('.organogram');
 
 function resetTeamMembers() {
   organogram?.querySelectorAll('.team-member.is-showing-units').forEach((card) => {
-    toggleTeamMember(card);
+    toggleTeamMember(card, false);
   });
 }
 
-function toggleTeamMember(card) {
+function toggleTeamMember(card, announce = true) {
   if (card) {
     card.classList.toggle('is-showing-units');
     const isShowingUnits = card.classList.contains('is-showing-units');
     const front = card.querySelector('.team-member-front');
     const back = card.querySelector('.team-member-back');
     const toggleButton = card.querySelector('[data-team-toggle]');
+    const status = card.querySelector('[data-team-status]');
+    const memberName = card.querySelector('.team-member-front h3').textContent;
 
     front.setAttribute('aria-hidden', String(isShowingUnits));
     back.setAttribute('aria-hidden', String(!isShowingUnits));
@@ -222,12 +267,19 @@ function toggleTeamMember(card) {
     toggleButton.querySelector('span').textContent = isShowingUnits
       ? 'Voltar aos contatos'
       : 'Ver unidades atendidas';
+    status.textContent = announce
+      ? isShowingUnits
+        ? `${memberName}: unidades atendidas exibidas.`
+        : `${memberName}: contatos exibidos.`
+      : '';
   }
 }
 
 organogram?.addEventListener('click', (event) => {
-  if (event.target.closest('a')) return;
-  toggleTeamMember(event.target.closest('.team-member'));
+  const toggleButton = event.target.closest('[data-team-toggle]');
+  if (!toggleButton) return;
+
+  toggleTeamMember(toggleButton.closest('.team-member'));
 });
 
 organogramDialog?.addEventListener('close', resetTeamMembers);
