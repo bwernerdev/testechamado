@@ -359,6 +359,10 @@ section p {
   width: min(100%, 280px);
 }
 
+.leadership-member:first-child {
+  transform: translateY(-12px);
+}
+
 .leadership-member::after {
   position: absolute;
   content: "";
