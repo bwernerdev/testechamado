@@ -495,7 +495,7 @@ section p {
 }
 
 .contact-details a {
-  color: inherit;
+  color: var(--text);
   overflow-wrap: anywhere;
   font-weight: 700;
 }
