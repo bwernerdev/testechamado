@@ -59,6 +59,8 @@ const teamMembers = [
   },
 ];
 
+const teamDisplayOrder = ['Sandro Pereira', 'Thayane Morlus', 'Vitor Cruz', 'Bruno Werner'];
+
 function escapeHtml(value) {
   return String(value).replace(/[&<>"']/g, (char) => ({
     '&': '&amp;',
@@ -89,28 +91,32 @@ function renderOrganogram() {
   const container = document.querySelector('.organogram');
   if (!container) return;
 
-  container.innerHTML = teamMembers
-    .map((member) => {
+  container.innerHTML = [...teamMembers]
+    .sort((first, second) => teamDisplayOrder.indexOf(first.name) - teamDisplayOrder.indexOf(second.name))
+    .map((member, index) => {
       const centers = member.centers
         .map((center) => `<li>${escapeHtml(center)}</li>`)
         .join('');
+      const unitsId = `unidades-${index + 1}`;
       return `
-      <article class="team-member" role="listitem" tabindex="0" aria-expanded="false" aria-label="${escapeHtml(member.name)}: mostrar unidades atendidas">
+      <article class="team-member" role="listitem">
         <div class="team-member-content">
-          <div class="team-member-front">
+          <div class="team-member-front" aria-hidden="false">
             <div class="avatar" aria-hidden="true">${escapeHtml(member.initials)}</div>
             <h3>${escapeHtml(member.name)}</h3>
             <div class="contact-details">
               <p>Ramal: ${escapeHtml(member.ramal)}</p>
               <a href="mailto:${escapeHtml(member.email)}">${escapeHtml(member.email)}</a>
             </div>
-            <span class="flip-hint" aria-hidden="true">Clique para ver as unidades</span>
           </div>
-          <div class="team-member-back">
+          <div class="team-member-back" id="${unitsId}" aria-hidden="true" inert>
             <h3>Unidades atendidas</h3>
             <ul class="distribution-centers">${centers}</ul>
           </div>
         </div>
+        <button class="flip-hint" type="button" data-team-toggle aria-expanded="false" aria-controls="${unitsId}">
+          Ver unidades
+        </button>
       </article>`;
     })
     .join('');
@@ -122,7 +128,9 @@ const closeOrganogramButton = document.querySelector('[data-organogram-close]');
 const organogramUpdatedText = document.querySelector('[data-organogram-updated]');
 
 if (organogramUpdatedText) {
-  organogramUpdatedText.textContent = `Dados atualizados em ${organogramUpdatedAt}`;
+  const [day, month, year] = organogramUpdatedAt.split('/');
+  organogramUpdatedText.dateTime = `${year}-${month}-${day}`;
+  organogramUpdatedText.textContent = organogramUpdatedAt;
 }
 
 document.querySelectorAll('main > section').forEach((section) => {
@@ -130,13 +138,8 @@ document.querySelectorAll('main > section').forEach((section) => {
   const summary = details?.querySelector('summary');
   if (!details || !summary) return;
 
-  section.tabIndex = 0;
-  section.setAttribute('role', 'button');
-  section.setAttribute('aria-expanded', String(details.open));
-
   const toggleDetails = () => {
     details.open = !details.open;
-    section.setAttribute('aria-expanded', String(details.open));
   };
 
   section.addEventListener('click', (event) => {
@@ -145,16 +148,6 @@ document.querySelectorAll('main > section').forEach((section) => {
     toggleDetails();
   });
 
-  section.addEventListener('keydown', (event) => {
-    if (event.target !== section || (event.key !== 'Enter' && event.key !== ' ')) return;
-
-    event.preventDefault();
-    toggleDetails();
-  });
-
-  details.addEventListener('toggle', () => {
-    section.setAttribute('aria-expanded', String(details.open));
-  });
 });
 
 if (organogramDialog && openOrganogramButton && closeOrganogramButton) {
@@ -194,26 +187,22 @@ function toggleTeamMember(card) {
   if (card) {
     card.classList.toggle('is-flipped');
     const isFlipped = card.classList.contains('is-flipped');
-    const name = card.querySelector('.team-member-front h3')?.textContent || 'Comprador';
+    const front = card.querySelector('.team-member-front');
+    const back = card.querySelector('.team-member-back');
+    const toggleButton = card.querySelector('[data-team-toggle]');
 
-    card.setAttribute('aria-expanded', String(isFlipped));
-    card.setAttribute('aria-label', `${name}: ${isFlipped ? 'ocultar' : 'mostrar'} unidades atendidas`);
+    front.setAttribute('aria-hidden', String(isFlipped));
+    back.setAttribute('aria-hidden', String(!isFlipped));
+    front.inert = isFlipped;
+    back.inert = !isFlipped;
+    toggleButton.setAttribute('aria-expanded', String(isFlipped));
+    toggleButton.textContent = isFlipped ? 'Voltar aos contatos' : 'Ver unidades';
   }
 }
 
 organogram?.addEventListener('click', (event) => {
   if (event.target.closest('a')) return;
   toggleTeamMember(event.target.closest('.team-member'));
-});
-
-organogram?.addEventListener('keydown', (event) => {
-  if (event.key !== 'Enter' && event.key !== ' ') return;
-
-  const card = event.target.closest('.team-member');
-  if (!card || event.target !== card) return;
-
-  event.preventDefault();
-  toggleTeamMember(card);
 });
 
 renderLeadership();

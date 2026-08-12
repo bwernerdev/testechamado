@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Diretrizes para a abertura de chamados de Suprimentos Seara CDs."
+      content="Diretrizes para a abertura de chamados de Suprimentos dos CDs da Seara."
     />
     <title>Diretrizes para a abertura de chamados | Suprimentos Seara</title>
     <link rel="icon" type="image/png" sizes="32x32" href="imagens/favicon-32.png" />
@@ -29,7 +29,7 @@
           />
         </svg>
         <div class="header-content">
-          <img src="imagens/logojbs.jfif" alt="JBS" class="logo logo-jbs" />
+          <img src="imagens/logojbs.jfif" alt="Logo da JBS" class="logo logo-jbs" />
           <div class="header-text">
             <h1>Diretrizes para a abertura de chamados</h1>
             <p>Suprimentos Seara – CDs</p>
@@ -39,9 +39,13 @@
 
       <main>
         <section aria-labelledby="descricao-chamado">
-          <h2 id="descricao-chamado">Para a abertura do chamado</h2>
           <details class="content-toggle">
-            <summary aria-label="Mostrar ou ocultar orientações"></summary>
+            <summary>
+              <h2 id="descricao-chamado">
+                O que preciso para abrir um chamado?
+                <span class="toggle-icon" aria-hidden="true"></span>
+              </h2>
+            </summary>
             <div class="toggle-content">
               <ul>
                 <li>
@@ -55,36 +59,52 @@
         </section>
 
         <section aria-labelledby="chamados-nao-aceitos">
-          <h2 id="chamados-nao-aceitos">Não serão aceitos</h2>
           <details class="content-toggle">
-            <summary aria-label="Mostrar ou ocultar orientações"></summary>
+            <summary>
+              <h2 id="chamados-nao-aceitos">
+                Chamados não aceitos
+                <span class="toggle-icon" aria-hidden="true"></span>
+              </h2>
+            </summary>
             <div class="toggle-content">
               <ul>
                 <li>
-                  Chamados para a contratação de serviços spot, que devem continuar seguindo o fluxo pela
-                  SNAC0500;
+                  Chamados para a contratação de serviços pontuais, ou seja, não contínuos. Essas
+                  contratações devem continuar seguindo o fluxo previsto na SNAC0500.
                 </li>
                 <li>Chamados com Memorial Descritivo sem escopo detalhado.</li>
-                <li>Para chamados onde o solicitante tiver um fornecedor de preferência deve ser anexado junto com o memorial descritivo o orçamento do fornecedor em questão.</li>
+                <li>
+                  Nos chamados em que o solicitante indicar um fornecedor de preferência, o orçamento
+                  desse fornecedor deverá ser anexado ao Memorial Descritivo.
+                </li>
               </ul>
             </div>
           </details>
         </section>
 
         <section aria-labelledby="cadastro-fornecedores">
-          <h2 id="cadastro-fornecedores">Cadastro de fornecedores</h2>
           <details class="content-toggle">
-            <summary aria-label="Mostrar ou ocultar orientações"></summary>
+            <summary>
+              <h2 id="cadastro-fornecedores">
+                Cadastro de fornecedores
+                <span class="toggle-icon" aria-hidden="true"></span>
+              </h2>
+            </summary>
             <div class="toggle-content">
               <p>
-                Os fornecedores específicos indicados pelo solicitante devem estar devidamente cadastrados no
-                SPR para darmos sequência ao contrato, conforme a política apresentada abaixo.
+                Os fornecedores indicados pelo solicitante devem estar cadastrados no SPR para que seja possível dar sequência ao contrato, conforme a política apresentada abaixo.
               </p>
-              <a class="supplier-policy-link" href="imagens/cadastro-fornecedores.png" target="_blank">
+              <a
+                class="supplier-policy-link"
+                href="imagens/cadastro-fornecedores.png"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Ampliar a Política de Suprimentos em uma nova aba"
+              >
                 <img
                   class="supplier-policy-image"
                   src="imagens/cadastro-fornecedores.png"
-                  alt="Trecho da Política de Suprimentos com as orientações para o cadastro de fornecedores. Toque para ampliar."
+                  alt="Trecho da Política de Suprimentos com orientações para o cadastro de fornecedores"
                   loading="lazy"
                   decoding="async"
                 />
@@ -101,7 +121,9 @@
                 ×
               </button>
             </div>
-            <p class="organogram-updated" data-organogram-updated></p>
+            <p class="organogram-updated">
+              Dados atualizados em <time data-organogram-updated></time>
+            </p>
             <div class="leadership" role="list" aria-label="Liderança"></div>
             <div class="organogram" role="list" aria-label="Equipe de Suprimentos"></div>
           </section>
@@ -111,11 +133,13 @@
         </noscript>
       </main>
 
-      <div class="organogram-action">
+      <div class="organogram-action" role="group" aria-label="Ações e documentos de Suprimentos">
         <button
           class="organogram-button"
           type="button"
           data-organogram-open
+          aria-haspopup="dialog"
+          aria-controls="organogram-dialog"
           aria-label="Consultar comprador por unidade"
           title="Consultar o comprador responsável por cada unidade"
         >
@@ -129,7 +153,7 @@
           href="https://intranetjbs.com.br/area/Foods/Executiva-Adm.-e-Financeira/gerencia-controladoria-cds/Documents/Compras/02.%20Treinamentos%20e%20Manuais/MODELO%20MEMORIAL%20DESCRITIVO%20SIMPLES.docx"
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="Abrir modelo de Memorial Descritivo"
+          aria-label="Abrir modelo de Memorial Descritivo em uma nova aba"
           title="Abrir o modelo de Memorial Descritivo em uma nova aba"
         >
           <svg class="button-icon" viewBox="0 0 24 24" aria-hidden="true">
@@ -142,7 +166,7 @@
           href="https://intranetjbs.com.br/area/Foods/Executiva-Adm.-e-Financeira/gerencia-controladoria-cds/Documents/Compras/02.%20Treinamentos%20e%20Manuais/MANUAL%20CADASTRO%20FORNECEDOR.pdf"
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="Abrir manual de cadastro de fornecedores"
+          aria-label="Abrir manual de cadastro de fornecedores em uma nova aba"
           title="Abrir o manual de cadastro de fornecedores em uma nova aba"
         >
           <svg class="button-icon" viewBox="0 0 24 24" aria-hidden="true">
