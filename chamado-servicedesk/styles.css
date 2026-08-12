@@ -380,18 +380,11 @@ section p {
   border-radius: 10px;
   background: #f8faf8;
   text-align: center;
-  perspective: 1000px;
 }
 
 .team-member-content {
   position: relative;
   min-height: 280px;
-  transition: transform 0.6s ease;
-  transform-style: preserve-3d;
-}
-
-.team-member.is-flipped .team-member-content {
-  transform: rotateY(180deg);
 }
 
 .team-member-front,
@@ -403,20 +396,33 @@ section p {
   min-height: 280px;
   padding: 24px 16px 52px;
   border-radius: 10px;
-  backface-visibility: hidden;
+  transition: opacity 260ms ease, visibility 260ms ease;
 }
 
 .team-member-front {
   background: #f8faf8;
   justify-content: center;
+  opacity: 1;
+  visibility: visible;
 }
 
 .team-member-back {
   justify-content: flex-start;
   position: absolute;
   inset: 0;
-  transform: rotateY(180deg);
+  opacity: 0;
+  visibility: hidden;
   background: #f4f6f4;
+}
+
+.team-member.is-flipped .team-member-front {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.team-member.is-flipped .team-member-back {
+  opacity: 1;
+  visibility: visible;
 }
 
 .avatar {
@@ -573,15 +579,13 @@ summary:focus-visible {
   }
 
   .team-member-content {
-    transform: none !important;
     transition: none;
   }
 
   .team-member-front,
   .team-member-back {
     position: static;
-    transform: none;
-    backface-visibility: visible;
+    transition: none;
   }
 
   .team-member-front[aria-hidden="true"],
