@@ -2,7 +2,7 @@ const http = require('http');
 const path = require('path');
 const fs = require('fs');
 
-const publicDir = path.join(__dirname, 'chamado servicedesk');
+const publicDir = path.join(__dirname, 'chamado-servicedesk');
 const port = process.env.PORT || 3000;
 
 const mime = {
@@ -14,37 +14,67 @@ const mime = {
   '.jpeg': 'image/jpeg',
   '.jfif': 'image/jpeg',
   '.ico': 'image/x-icon',
-  '.svg': 'image/svg+xml'
+  '.svg': 'image/svg+xml',
 };
 
-http.createServer((req, res) => {
-  try {
-    let reqPath = decodeURIComponent(req.url.split('?')[0]);
+function sendText(res, status, message) {
+  res.writeHead(status, {
+    'Content-Type': 'text/plain; charset=utf-8',
+    'X-Content-Type-Options': 'nosniff',
+  });
+  res.end(message);
+}
+
+http
+  .createServer((req, res) => {
+    let reqPath;
+    try {
+      reqPath = decodeURIComponent(req.url.split('?')[0]);
+    } catch {
+      sendText(res, 400, 'Bad Request');
+      return;
+    }
+
     if (reqPath === '/') reqPath = '/index.html';
 
     const filePath = path.join(publicDir, reqPath);
-    if (!filePath.startsWith(publicDir)) {
-      res.statusCode = 403;
-      res.end('Forbidden');
+
+    // Evita path traversal: o caminho resolvido precisa permanecer
+    // dentro do diretório público.
+    const relative = path.relative(publicDir, filePath);
+    if (relative.startsWith('..') || path.isAbsolute(relative)) {
+      sendText(res, 403, 'Forbidden');
       return;
     }
 
     fs.stat(filePath, (err, stats) => {
       if (err || !stats.isFile()) {
-        res.statusCode = 404;
-        res.end('Not Found');
+        sendText(res, 404, 'Not Found');
         return;
       }
 
       const ext = path.extname(filePath).toLowerCase();
       const contentType = mime[ext] || 'application/octet-stream';
-      res.writeHead(200, { 'Content-Type': contentType });
-      fs.createReadStream(filePath).pipe(res);
+      const isHtml = contentType === 'text/html';
+
+      const headers = {
+        'Content-Type': contentType,
+        'X-Content-Type-Options': 'nosniff',
+        'Cache-Control': isHtml ? 'no-cache' : 'public, max-age=86400',
+      };
+
+      if (req.method === 'HEAD') {
+        res.writeHead(200, headers);
+        res.end();
+        return;
+      }
+
+      res.writeHead(200, headers);
+      const stream = fs.createReadStream(filePath);
+      stream.on('error', () => res.destroy());
+      stream.pipe(res);
     });
-  } catch (e) {
-    res.statusCode = 500;
-    res.end('Server error');
-  }
-}).listen(port, () => {
-  console.log(`Serving ${publicDir} at http://localhost:${port}`);
-});
+  })
+  .listen(port, () => {
+    console.log(`Serving ${publicDir} at http://localhost:${port}`);
+  });

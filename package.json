@@ -1,0 +1,14 @@
+{
+  "name": "chamado-servicedesk",
+  "version": "1.0.0",
+  "description": "Página interna com as diretrizes para abertura de chamados de Suprimentos (CDs Seara) e organograma da equipe.",
+  "private": true,
+  "license": "UNLICENSED",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=14"
+  }
+}

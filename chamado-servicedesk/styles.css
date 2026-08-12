@@ -3,7 +3,10 @@
   --surface: #ffffff;
   --text: #1e2721;
   --muted-text: #516056;
-  --brand: #23723a;
+  --primary: #202080;
+  --primary-dark: #171760;
+  --heading: #011d5e;
+  --focus: #f2c94c;
   --border: #d7dfd9;
   --shadow: 0 8px 24px rgba(21, 42, 28, 0.1);
 }
@@ -15,7 +18,7 @@
 body {
   min-width: 320px;
   margin: 0;
-  font-family: Arial, sans-serif;
+  font-family: Arial, system-ui, -apple-system, "Segoe UI", sans-serif;
   line-height: 1.55;
   color: var(--text);
   background: var(--page-background);
@@ -76,7 +79,7 @@ h1 {
   margin-bottom: 4px;
   font-size: clamp(0.8rem, 2.5vw, 1.65rem);
   line-height: 1.2;
-  white-space: nowrap;
+  text-wrap: balance;
   text-transform: uppercase;
 }
 
@@ -110,7 +113,7 @@ main {
   border: 0;
   border-radius: 8px;
   color: #fff;
-  background: #202080;
+  background: var(--primary);
   box-shadow: 0 3px 8px rgba(21, 42, 28, 0.2);
   cursor: pointer;
   font: inherit;
@@ -121,12 +124,12 @@ main {
 .organogram-button:hover,
 .download-button:hover {
   color: #fff;
-  background: #171760;
+  background: var(--primary-dark);
 }
 
 section {
   padding: 24px 28px;
-  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+  transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease;
 }
 
 main > section {
@@ -136,14 +139,14 @@ main > section {
 @media (hover: hover) {
   main > section:hover {
     transform: translateY(-4px);
-    border-color: #202080;
+    border-color: var(--primary);
     box-shadow: 0 12px 28px rgba(21, 42, 28, 0.16);
   }
 }
 
 h2 {
   margin-bottom: 8px;
-  color: #202080;
+  color: var(--heading);
   font-size: 1.2rem;
 }
 
@@ -165,7 +168,7 @@ section p {
   place-items: center;
   border: 1px solid var(--border);
   border-radius: 50%;
-  color: #202080;
+  color: var(--heading);
   background: var(--surface);
   cursor: pointer;
   font-weight: 700;
@@ -185,7 +188,7 @@ section p {
 }
 
 .content-toggle[open] summary {
-  border-color: #202080;
+  border-color: var(--primary);
 }
 
 .content-toggle[open] summary::after {
@@ -275,17 +278,17 @@ section p {
   height: 1px;
   top: -42px;
   left: calc(12.5% - 6px);
-  background: #202080;
+  background: var(--primary);
 }
 
 .organogram .team-member::before {
   position: absolute;
   content: "";
   width: 1px;
-  height: 14px;
+  height: 43px;
   top: -42px;
   left: 50%;
-  background: #202080;
+  background: var(--primary);
 }
 
 .organogram .team-member:nth-child(1) {
@@ -322,13 +325,13 @@ section p {
   height: 25px;
   left: 50%;
   bottom: -26px;
-  background: #202080;
+  background: var(--primary);
 }
 
 .team-member {
   position: relative;
   min-width: 0;
-  border: 1px solid #202080;
+  border: 1px solid var(--primary);
   border-radius: 10px;
   background: #f8faf8;
   text-align: center;
@@ -351,7 +354,7 @@ section p {
 .team-member-back {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  align-items: center;
   width: 100%;
   min-height: 280px;
   padding: 24px 16px 18px;
@@ -361,9 +364,11 @@ section p {
 
 .team-member-front {
   background: #f8faf8;
+  justify-content: center;
 }
 
 .team-member-back {
+  justify-content: flex-start;
   position: absolute;
   inset: 0;
   transform: rotateY(180deg);
@@ -371,6 +376,8 @@ section p {
 }
 
 .avatar {
+  /* A margem negativa faz o avatar "sair" do topo do card,
+     sobrepondo a borda — técnica intencional do layout. */
   display: grid;
   width: 64px;
   height: 64px;
@@ -379,23 +386,20 @@ section p {
   border: 3px solid var(--surface);
   border-radius: 50%;
   color: #fff;
-  background: #202080;
+  background: var(--primary);
   box-shadow: 0 2px 8px rgba(32, 32, 128, 0.25);
   font-weight: 700;
 }
 
 .team-member h3 {
   margin: 0;
-  color: #202080;
+  color: var(--heading);
   font-size: 1rem;
 }
 
 .team-member-front .contact-details {
-  margin-top: auto;
+  margin-top: 12px;
   margin-bottom: 0;
-  color: #202080;
-  font-size: 0.72rem;
-  line-height: 1.4;
 }
 
 .team-member-back h3 {
@@ -404,9 +408,10 @@ section p {
 
 .contact-details {
   margin-bottom: 12px;
-  color: #202080;
+  color: var(--heading);
   font-size: 0.72rem;
   line-height: 1.4;
+  text-align: center;
 }
 
 .contact-details p {
@@ -421,8 +426,8 @@ section p {
 .distribution-centers {
   margin: 0;
   padding: 12px 0 0;
-  border-top: 1px solid #202080;
-  color: #202080;
+  border-top: 1px solid var(--primary);
+  color: var(--heading);
   font-size: 0.72rem;
   line-height: 1.45;
   list-style: none;
@@ -455,16 +460,16 @@ footer p {
 }
 
 a {
-  color: #202080;
+  color: var(--heading);
   font-weight: 700;
 }
 
 a:hover {
-  color: #171760;
+  color: var(--heading);
 }
 
 a:focus-visible {
-  outline: 3px solid #f2c94c;
+  outline: 3px solid var(--focus);
   outline-offset: 3px;
 }
 

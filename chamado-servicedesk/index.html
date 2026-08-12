@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Diretrizes para a abertura de chamados de Suprimentos Seara CD's."
+    />
+    <title>Diretrizes para abertura de chamado | Suprimentos Seara</title>
+    <link rel="icon" type="image/png" href="imagens/logoseara.png" />
+    <link rel="stylesheet" href="styles.css?v=20260812-2" />
+  </head>
+
+  <body>
+    <div class="container">
+      <header class="page-header">
+        <div class="header-content">
+          <img src="imagens/logoseara.png" alt="Seara" class="logo logo-seara" />
+          <div>
+            <h1>Diretrizes para abertura de chamado</h1>
+            <p>Suprimentos Seara CDs</p>
+          </div>
+          <img src="imagens/logojbs.jfif" alt="JBS" class="logo logo-jbs" />
+        </div>
+      </header>
+
+      <main>
+        <section aria-labelledby="descricao-chamado">
+          <h2 id="descricao-chamado">O que escrever no chamado?</h2>
+          <details class="content-toggle">
+            <summary aria-label="Abrir orientações"></summary>
+            <div class="toggle-content">
+              <p>Descreva a solicitação de forma objetiva para que o atendimento possa começar sem novas dúvidas.</p>
+              <ul>
+                <li>Informe o CD, o fornecedor e o número do pedido, quando houver.</li>
+                <li>Explique o ocorrido, com datas e valores envolvidos.</li>
+                <li>Indique o impacto e a urgência da solicitação.</li>
+              </ul>
+            </div>
+          </details>
+        </section>
+
+        <section aria-labelledby="anexos-chamado">
+          <h2 id="anexos-chamado">O que anexar no chamado?</h2>
+          <details class="content-toggle">
+            <summary aria-label="Abrir orientações"></summary>
+            <div class="toggle-content">
+              <p>Anexe os documentos e evidências que ajudem a identificar e validar a solicitação.</p>
+              <ul>
+                <li>Pedido de compra, nota fiscal ou comprovante relacionado.</li>
+                <li>Prints de tela e mensagens de erro, quando aplicável.</li>
+                <li>Planilhas ou documentos de apoio necessários para análise.</li>
+              </ul>
+            </div>
+          </details>
+        </section>
+
+        <section aria-labelledby="print-completo">
+          <h2 id="print-completo">Não corte o print</h2>
+          <details class="content-toggle">
+            <summary aria-label="Abrir orientações"></summary>
+            <div class="toggle-content">
+              <p>Envie a imagem completa, incluindo a tela, os dados de identificação e a mensagem apresentada. Um print recortado pode impedir a conferência e atrasar o atendimento.</p>
+            </div>
+          </details>
+        </section>
+        <dialog class="organogram-dialog" id="organogram-dialog" aria-labelledby="organograma">
+          <section class="organogram-section">
+            <div class="dialog-heading">
+              <h2 id="organograma">Organograma de Suprimentos</h2>
+              <button class="dialog-close" type="button" data-organogram-close aria-label="Fechar organograma">×</button>
+            </div>
+            <div class="leadership" role="list" aria-label="Liderança"></div>
+            <div class="organogram" role="list" aria-label="Equipe de Suprimentos"></div>
+          </section>
+        </dialog>
+      </main>
+
+      <footer>
+        <p>
+          Para conhecer a área de Suprimentos, sua estrutura e atribuições, consulte a
+          <a
+            href="https://intranetjbs.com.br/area/Foods/Executiva-Adm.-e-Financeira/gerencia-controladoria-cds/Documents/Forms/AllItems.aspx?RootFolder=%2Farea%2FFoods%2FExecutiva%2DAdm%2E%2De%2DFinanceira%2Fgerencia%2Dcontroladoria%2Dcds%2FDocuments%2FCompras"
+            target="_blank"
+            rel="noopener noreferrer"
+          >Intranet</a>.
+        </p>
+      </footer>
+
+      <div class="organogram-action">
+        <button class="organogram-button" type="button" data-organogram-open>
+          Quem é o comprador da minha unidade?
+        </button>
+        <a
+          class="download-button"
+          href="https://intranetjbs.com.br/area/Foods/Executiva-Adm.-e-Financeira/gerencia-controladoria-cds/Documents/Compras/02.%20Treinamentos%20e%20Manuais/MODELO%20MEMORIAL%20DESCRITIVO%20SIMPLES.docx"
+        >Baixar modelo de Memorial Descritivo</a>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
