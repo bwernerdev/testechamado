@@ -16,6 +16,7 @@ const teamMembers = [
   {
     initials: 'TM',
     name: 'Thayane Morlus',
+    order: 2,
     ramal: '47 3241 8564 (8291 - 8564)',
     email: 'thayane.afonso@seara.com.br',
     image: 'imagens/org-thayane.webp',
@@ -31,6 +32,7 @@ const teamMembers = [
   {
     initials: 'BW',
     name: 'Bruno Werner',
+    order: 4,
     ramal: '47 3241 8515 (8291 - 8515)',
     email: 'bruno.werner@seara.com.br',
     image: 'imagens/org-bruno.webp',
@@ -44,6 +46,7 @@ const teamMembers = [
   {
     initials: 'SP',
     name: 'Sandro Pereira',
+    order: 1,
     ramal: '47 3241 1116 (8291 - 1116)',
     email: 'sandro.pereira@seara.com.br',
     image: 'imagens/org-sandro.webp',
@@ -52,6 +55,7 @@ const teamMembers = [
   {
     initials: 'VC',
     name: 'Vitor Cruz',
+    order: 3,
     ramal: '47 3241 1174 (8291 - 1174)',
     email: 'vitor.antunes@seara.com.br',
     image: 'imagens/org-vitor.webp',
@@ -68,8 +72,6 @@ const teamMembers = [
     ],
   },
 ];
-
-const teamDisplayOrder = ['Sandro Pereira', 'Thayane Morlus', 'Vitor Cruz', 'Bruno Werner'];
 
 function escapeHtml(value) {
   return String(value).replace(/[&<>"']/g, (char) => ({
@@ -145,7 +147,7 @@ function renderOrganogram() {
   if (!container) return;
 
   container.innerHTML = [...teamMembers]
-    .sort((first, second) => teamDisplayOrder.indexOf(first.name) - teamDisplayOrder.indexOf(second.name))
+    .sort((first, second) => first.order - second.order)
     .map((member) => {
       const centers = member.centers
         .map((center) => `<li>${escapeHtml(center)}</li>`)
