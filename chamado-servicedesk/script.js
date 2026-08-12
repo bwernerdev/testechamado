@@ -20,12 +20,12 @@ const teamMembers = [
     email: 'thayane.afonso@seara.com.br',
     image: 'imagens/org-thayane.webp',
     centers: [
-      '178.692 — Campinas - CD',
-      '178.963 — Ribeirão Preto - CD',
-      '178.697 — São Paulo - CD',
-      '178.892 — SP Anhanguera - CD',
-      '30.901 — Campinas - CD',
-      '30.603 — Duque de Caxias - CD',
+      '178.692 — Campinas (CD)',
+      '178.963 — Ribeirão Preto (CD)',
+      '178.697 — São Paulo (CD)',
+      '178.892 — SP Anhanguera (CD)',
+      '30.901 — Campinas (CD)',
+      '30.603 — Duque de Caxias (CD)',
     ],
   },
   {
@@ -37,8 +37,8 @@ const teamMembers = [
     centers: [
       '30.570 — Itajaí Armazém',
       '30.572 — Itajaí Fatiados',
-      '30.573 — Itajaí - CD',
-      '30.733 — Cambé - CD',
+      '30.573 — Itajaí (CD)',
+      '30.733 — Cambé (CD)',
     ],
   },
   {
@@ -56,14 +56,14 @@ const teamMembers = [
     email: 'vitor.antunes@seara.com.br',
     image: 'imagens/org-vitor.webp',
     centers: [
-      '178.676 — Cabo Santo Agostinho - CD',
-      '178.356 — Aquiraz - CD',
-      '178.675 — Ribeirão das Neves - CD',
-      '30.910 — Salvador - CD',
-      '30.965 — Vitória da Conquista - CD',
-      '30.458 — Nova Santa Rita - CD',
-      '30.943 — Ribeirão Preto - CD',
-      '30.770 — Canoas - ADM',
+      '178.676 — Cabo Santo Agostinho (CD)',
+      '178.356 — Aquiraz (CD)',
+      '178.675 — Ribeirão das Neves (CD)',
+      '30.910 — Salvador (CD)',
+      '30.965 — Vitória da Conquista (CD)',
+      '30.458 — Nova Santa Rita (CD)',
+      '30.943 — Ribeirão Preto (CD)',
+      '30.770 — Canoas (ADM)',
     ],
   },
 ];
@@ -108,9 +108,10 @@ function renderOrganogram() {
       const centers = member.centers
         .map((center) => `<li>${escapeHtml(center)}</li>`)
         .join('');
+      const compactClass = member.centers.length >= 8 ? ' team-member--compact' : '';
       const unitsId = `unidades-${index + 1}`;
       return `
-      <article class="team-member" role="listitem">
+      <article class="team-member${compactClass}" role="listitem">
         <div class="team-member-content">
           <div class="team-member-front" aria-hidden="false">
             <div class="avatar" aria-hidden="true">${member.image
@@ -122,14 +123,14 @@ function renderOrganogram() {
               <a href="mailto:${escapeHtml(member.email)}">${escapeHtml(member.email)}</a>
             </div>
           </div>
-          <div class="team-member-back" id="${unitsId}" aria-hidden="true" inert>
+          <div class="team-member-back" id="${unitsId}" aria-hidden="true" aria-live="polite" inert>
             <h3>${escapeHtml(member.name)}</h3>
             <p class="team-member-back-label">Unidades atendidas</p>
             <ul class="distribution-centers">${centers}</ul>
           </div>
         </div>
         <button class="flip-hint" type="button" data-team-toggle aria-expanded="false" aria-controls="${unitsId}">
-          Ver unidades
+          <span>Ver unidades atendidas</span>
         </button>
       </article>`;
     })
@@ -200,25 +201,27 @@ if (organogramDialog && openOrganogramButton && closeOrganogramButton) {
 const organogram = document.querySelector('.organogram');
 
 function resetTeamMembers() {
-  organogram?.querySelectorAll('.team-member.is-flipped').forEach((card) => {
+  organogram?.querySelectorAll('.team-member.is-showing-units').forEach((card) => {
     toggleTeamMember(card);
   });
 }
 
 function toggleTeamMember(card) {
   if (card) {
-    card.classList.toggle('is-flipped');
-    const isFlipped = card.classList.contains('is-flipped');
+    card.classList.toggle('is-showing-units');
+    const isShowingUnits = card.classList.contains('is-showing-units');
     const front = card.querySelector('.team-member-front');
     const back = card.querySelector('.team-member-back');
     const toggleButton = card.querySelector('[data-team-toggle]');
 
-    front.setAttribute('aria-hidden', String(isFlipped));
-    back.setAttribute('aria-hidden', String(!isFlipped));
-    front.inert = isFlipped;
-    back.inert = !isFlipped;
-    toggleButton.setAttribute('aria-expanded', String(isFlipped));
-    toggleButton.textContent = isFlipped ? 'Voltar aos contatos' : 'Ver unidades';
+    front.setAttribute('aria-hidden', String(isShowingUnits));
+    back.setAttribute('aria-hidden', String(!isShowingUnits));
+    front.inert = isShowingUnits;
+    back.inert = !isShowingUnits;
+    toggleButton.setAttribute('aria-expanded', String(isShowingUnits));
+    toggleButton.querySelector('span').textContent = isShowingUnits
+      ? 'Voltar aos contatos'
+      : 'Ver unidades atendidas';
   }
 }
 
