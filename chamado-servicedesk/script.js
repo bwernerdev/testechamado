@@ -4,7 +4,12 @@ const organogramUpdatedAt = '12/08/2026';
 
 const leadershipMembers = [
   { initials: 'AB', name: 'Alex Borba', role: 'Gerente Regional de CDs', image: 'imagens/org-alex.png' },
-  { initials: 'FL', name: 'Fabiano Lechinski', role: 'Coordenador Administrativo' },
+  {
+    initials: 'FL',
+    name: 'Fabiano Lechinski',
+    role: 'Coordenador Administrativo',
+    image: 'imagens/org-fabiano.png',
+  },
 ];
 
 const teamMembers = [
@@ -13,6 +18,7 @@ const teamMembers = [
     name: 'Thayane Morlus',
     ramal: '47 3241 8564 (8291 - 8564)',
     email: 'thayane.afonso@seara.com.br',
+    image: 'imagens/org-thayane.png',
     centers: [
       '178.692 — Campinas - CD',
       '178.963 — Ribeirão Preto - CD',
@@ -27,6 +33,7 @@ const teamMembers = [
     name: 'Bruno Werner',
     ramal: '47 3241 8515 (8291 - 8515)',
     email: 'bruno.werner@seara.com.br',
+    image: 'imagens/org-bruno.png',
     centers: [
       '30.570 — Itajaí Armazém',
       '30.572 — Itajaí Fatiados',
@@ -39,6 +46,7 @@ const teamMembers = [
     name: 'Sandro Pereira',
     ramal: '47 3241 1116 (8291 - 1116)',
     email: 'sandro.pereira@seara.com.br',
+    image: 'imagens/org-sandro.png',
     centers: ['Atendimento e suporte à equipe de Compras.'],
   },
   {
@@ -46,6 +54,7 @@ const teamMembers = [
     name: 'Vitor Cruz',
     ramal: '47 3241 1174 (8291 - 1174)',
     email: 'vitor.antunes@seara.com.br',
+    image: 'imagens/org-vitor.png',
     centers: [
       '178.676 — Cabo Santo Agostinho - CD',
       '178.356 — Aquiraz - CD',
@@ -104,7 +113,9 @@ function renderOrganogram() {
       <article class="team-member" role="listitem">
         <div class="team-member-content">
           <div class="team-member-front" aria-hidden="false">
-            <div class="avatar" aria-hidden="true">${escapeHtml(member.initials)}</div>
+            <div class="avatar" aria-hidden="true">${member.image
+              ? `<img src="${escapeHtml(member.image)}" alt="" />`
+              : escapeHtml(member.initials)}</div>
             <h3>${escapeHtml(member.name)}</h3>
             <div class="contact-details">
               <p>Ramal: ${escapeHtml(member.ramal)}</p>
