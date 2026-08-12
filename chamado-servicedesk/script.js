@@ -1,11 +1,9 @@
 'use strict';
 
-/* ----------------------------------------------------------------
-   Dados do organograma — edite aqui quando o time ou os CDs mudarem.
-   ---------------------------------------------------------------- */
+const organogramUpdatedAt = '12/08/2026';
 
 const leadershipMembers = [
-  { initials: 'AB', name: 'Alex Borba', role: "Gerente Regional CD's" },
+  { initials: 'AB', name: 'Alex Borba', role: 'Gerente Regional de CDs' },
   { initials: 'FL', name: 'Fabiano Lechinski', role: 'Coordenador Administrativo' },
 ];
 
@@ -26,7 +24,7 @@ const teamMembers = [
   },
   {
     initials: 'BW',
-    name: 'Bruno Wener',
+    name: 'Bruno Werner',
     ramal: '47 3241 8515 (8291 - 8515)',
     email: 'bruno.werner@seara.com.br',
     centers: [
@@ -61,10 +59,6 @@ const teamMembers = [
   },
 ];
 
-/* ----------------------------------------------------------------
-   Renderização do organograma
-   ---------------------------------------------------------------- */
-
 function escapeHtml(value) {
   return String(value).replace(/[&<>"']/g, (char) => ({
     '&': '&amp;',
@@ -77,6 +71,8 @@ function escapeHtml(value) {
 
 function renderLeadership() {
   const container = document.querySelector('.leadership');
+  if (!container) return;
+
   container.innerHTML = leadershipMembers
     .map(
       (member) => `
@@ -91,13 +87,15 @@ function renderLeadership() {
 
 function renderOrganogram() {
   const container = document.querySelector('.organogram');
+  if (!container) return;
+
   container.innerHTML = teamMembers
     .map((member) => {
       const centers = member.centers
         .map((center) => `<li>${escapeHtml(center)}</li>`)
         .join('');
       return `
-      <article class="team-member" role="listitem">
+      <article class="team-member" role="listitem" tabindex="0" aria-expanded="false" aria-label="${escapeHtml(member.name)}: mostrar unidades atendidas">
         <div class="team-member-content">
           <div class="team-member-front">
             <div class="avatar" aria-hidden="true">${escapeHtml(member.initials)}</div>
@@ -106,6 +104,7 @@ function renderOrganogram() {
               <p>Ramal: ${escapeHtml(member.ramal)}</p>
               <a href="mailto:${escapeHtml(member.email)}">${escapeHtml(member.email)}</a>
             </div>
+            <span class="flip-hint" aria-hidden="true">Clique para ver as unidades</span>
           </div>
           <div class="team-member-back">
             <h3>Unidades atendidas</h3>
@@ -117,36 +116,104 @@ function renderOrganogram() {
     .join('');
 }
 
-/* ----------------------------------------------------------------
-   Interações da página
-   ---------------------------------------------------------------- */
-
 const organogramDialog = document.querySelector('#organogram-dialog');
 const openOrganogramButton = document.querySelector('[data-organogram-open]');
 const closeOrganogramButton = document.querySelector('[data-organogram-close]');
+const organogramUpdatedText = document.querySelector('[data-organogram-updated]');
 
-openOrganogramButton.addEventListener('click', () => {
-  organogramDialog.showModal();
+if (organogramUpdatedText) {
+  organogramUpdatedText.textContent = `Dados atualizados em ${organogramUpdatedAt}`;
+}
+
+document.querySelectorAll('main > section').forEach((section) => {
+  const details = section.querySelector('.content-toggle');
+  const summary = details?.querySelector('summary');
+  if (!details || !summary) return;
+
+  section.tabIndex = 0;
+  section.setAttribute('role', 'button');
+  section.setAttribute('aria-expanded', String(details.open));
+
+  const toggleDetails = () => {
+    details.open = !details.open;
+    section.setAttribute('aria-expanded', String(details.open));
+  };
+
+  section.addEventListener('click', (event) => {
+    if (event.target.closest('summary, a, button, input, select, textarea')) return;
+
+    toggleDetails();
+  });
+
+  section.addEventListener('keydown', (event) => {
+    if (event.target !== section || (event.key !== 'Enter' && event.key !== ' ')) return;
+
+    event.preventDefault();
+    toggleDetails();
+  });
+
+  details.addEventListener('toggle', () => {
+    section.setAttribute('aria-expanded', String(details.open));
+  });
 });
 
-closeOrganogramButton.addEventListener('click', () => {
-  organogramDialog.close();
-});
+if (organogramDialog && openOrganogramButton && closeOrganogramButton) {
+  openOrganogramButton.addEventListener('click', () => {
+    if (typeof organogramDialog.showModal === 'function') {
+      organogramDialog.showModal();
+      return;
+    }
 
-// Fecha o diálogo ao clicar no backdrop (área escura ao redor).
-organogramDialog.addEventListener('click', (event) => {
-  if (event.target === organogramDialog) {
-    organogramDialog.close();
-  }
-});
+    organogramDialog.setAttribute('open', '');
+    organogramDialog.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
 
-document.querySelector('.organogram').addEventListener('click', (event) => {
-  if (event.target.closest('a')) return;
+  closeOrganogramButton.addEventListener('click', () => {
+    if (typeof organogramDialog.close === 'function') {
+      organogramDialog.close();
+      return;
+    }
 
-  const card = event.target.closest('.team-member');
+    organogramDialog.removeAttribute('open');
+  });
+
+  organogramDialog.addEventListener('click', (event) => {
+    if (event.target === organogramDialog) {
+      if (typeof organogramDialog.close === 'function') {
+        organogramDialog.close();
+      } else {
+        organogramDialog.removeAttribute('open');
+      }
+    }
+  });
+}
+
+const organogram = document.querySelector('.organogram');
+
+function toggleTeamMember(card) {
   if (card) {
     card.classList.toggle('is-flipped');
+    const isFlipped = card.classList.contains('is-flipped');
+    const name = card.querySelector('.team-member-front h3')?.textContent || 'Comprador';
+
+    card.setAttribute('aria-expanded', String(isFlipped));
+    card.setAttribute('aria-label', `${name}: ${isFlipped ? 'ocultar' : 'mostrar'} unidades atendidas`);
   }
+}
+
+organogram?.addEventListener('click', (event) => {
+  if (event.target.closest('a')) return;
+  toggleTeamMember(event.target.closest('.team-member'));
+});
+
+organogram?.addEventListener('keydown', (event) => {
+  if (event.key !== 'Enter' && event.key !== ' ') return;
+
+  const card = event.target.closest('.team-member');
+  if (!card || event.target !== card) return;
+
+  event.preventDefault();
+  toggleTeamMember(card);
 });
 
 renderLeadership();

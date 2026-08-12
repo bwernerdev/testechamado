@@ -6,7 +6,7 @@
   --primary: #202080;
   --primary-dark: #171760;
   --heading: #011d5e;
-  --focus: #f2c94c;
+  --focus: #5b8def;
   --border: #d7dfd9;
   --shadow: 0 8px 24px rgba(21, 42, 28, 0.1);
 }
@@ -42,9 +42,10 @@ section {
 .page-header {
   position: relative;
   padding: 0;
-  background: var(--heading);
-  border: 2px solid #fff;
+  background: var(--surface);
+  border: 0;
   border-radius: 14px;
+  box-shadow: none;
   overflow: hidden;
   aspect-ratio: 5 / 1;
 }
@@ -94,7 +95,7 @@ p {
 
 h1 {
   margin-bottom: 4px;
-  font-size: clamp(0.8rem, 2.5vw, 1.65rem);
+  font-size: clamp(1rem, 3vw, 1.85rem);
   line-height: 1.2;
   text-wrap: balance;
   text-transform: uppercase;
@@ -117,9 +118,8 @@ main {
 }
 
 .organogram-action {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
   margin-top: 32px;
   text-align: center;
@@ -142,6 +142,13 @@ main {
   text-decoration: none;
 }
 
+.button-icon {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+  fill: currentColor;
+}
+
 .organogram-button:hover,
 .download-button:hover {
   color: #fff;
@@ -155,6 +162,7 @@ section {
 
 main > section {
   position: relative;
+  cursor: pointer;
 }
 
 @media (hover: hover) {
@@ -194,16 +202,26 @@ section p {
   cursor: pointer;
   font-weight: 700;
   list-style: none;
-  transition: opacity 180ms ease;
+  transition: border-color 180ms ease, background-color 180ms ease;
 }
 
 .content-toggle summary::-webkit-details-marker {
   display: none;
 }
 
+.content-toggle summary::before,
 .content-toggle summary::after {
-  content: "+";
-  font-size: 1.3rem;
+  position: absolute;
+  content: "";
+  width: 14px;
+  height: 2px;
+  border-radius: 2px;
+  background: currentColor;
+  transition: transform 180ms ease;
+}
+
+.content-toggle summary::after {
+  transform: rotate(90deg);
 }
 
 .content-toggle[open] summary {
@@ -211,7 +229,7 @@ section p {
 }
 
 .content-toggle[open] summary::after {
-  content: "−";
+  transform: rotate(90deg) scaleX(0);
 }
 
 .toggle-content {
@@ -227,6 +245,11 @@ section p {
   width: 100%;
   height: auto;
   margin-top: 16px;
+}
+
+.supplier-policy-link {
+  display: block;
+  cursor: zoom-in;
 }
 
 .organogram-section {
@@ -275,6 +298,12 @@ section p {
   cursor: pointer;
   font-size: 1.5rem;
   line-height: 1;
+}
+
+.organogram-updated {
+  margin: 4px 52px 0 0;
+  color: var(--muted-text);
+  font-size: 0.78rem;
 }
 
 .organogram {
@@ -389,8 +418,6 @@ section p {
 }
 
 .avatar {
-  /* A margem negativa faz o avatar "sair" do topo do card,
-     sobrepondo a borda — técnica intencional do layout. */
   display: grid;
   width: 64px;
   height: 64px;
@@ -434,6 +461,13 @@ section p {
 .contact-details a {
   color: inherit;
   overflow-wrap: anywhere;
+  font-weight: 700;
+}
+
+.flip-hint {
+  margin-top: 10px;
+  color: var(--muted-text);
+  font-size: 0.7rem;
   font-weight: 700;
 }
 
@@ -498,7 +532,9 @@ a:focus-visible {
 }
 
 button:focus-visible,
-summary:focus-visible {
+summary:focus-visible,
+main > section:focus-visible,
+.team-member:focus-visible {
   outline: 3px solid var(--focus);
   outline-offset: 3px;
 }
@@ -522,18 +558,46 @@ summary:focus-visible {
     padding: 16px 0;
   }
 
+  main {
+    gap: 14px;
+    margin-top: 16px;
+  }
+
   section {
-    padding: 20px;
+    padding: 18px;
+    border-radius: 12px;
+  }
+
+  main > section h2 {
+    padding-right: 42px;
+    font-size: 1.05rem;
+    line-height: 1.35;
+  }
+
+  .content-toggle summary {
+    top: 14px;
+    right: 14px;
+    width: 30px;
+    height: 30px;
+  }
+
+  .toggle-content {
+    font-size: 0.94rem;
+  }
+
+  .supplier-policy-image {
+    margin-top: 12px;
+    border-radius: 6px;
   }
 
   .page-header {
     padding: 0;
     aspect-ratio: auto;
-    min-height: 130px;
+    height: 130px;
   }
 
   .header-content {
-    grid-template-columns: 40% 60%;
+    grid-template-columns: 36% 64%;
     gap: 0;
   }
 
@@ -543,7 +607,8 @@ summary:focus-visible {
 
   .logo-jbs {
     max-height: 48px;
-    max-width: 80%;
+    max-width: 58%;
+    transform: translateX(-6px);
   }
 
   .header-text h1 {
@@ -554,9 +619,33 @@ summary:focus-visible {
     font-size: 0.85rem;
   }
 
+  .organogram-action {
+    display: grid;
+    gap: 10px;
+    margin-top: 22px;
+  }
+
+  .organogram-button,
+  .download-button {
+    height: 100%;
+    width: 100%;
+    min-height: 48px;
+    padding: 11px 8px;
+    font-size: 0.82rem;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+  }
+
+  .organogram-dialog {
+    width: calc(100% - 16px);
+    max-height: calc(100dvh - 16px);
+    overflow-y: auto;
+  }
+
   .organogram {
     grid-template-columns: 1fr;
     gap: 52px;
+    margin-top: 58px;
   }
 
   .organogram::before {
@@ -569,6 +658,150 @@ summary:focus-visible {
   }
 
   .organogram-dialog .organogram-section {
-    padding: 20px;
+    padding: 18px;
+  }
+
+  .dialog-heading {
+    align-items: center;
+  }
+
+  .dialog-heading h2 {
+    margin-bottom: 0;
+    font-size: 1.05rem;
+  }
+
+  .leadership {
+    gap: 48px;
+    margin-top: 46px;
+  }
+
+  .team-member,
+  .leadership-member {
+    width: 100%;
+  }
+
+  .team-member-content,
+  .team-member-front,
+  .team-member-back {
+    min-height: 260px;
+  }
+
+  .contact-details,
+  .distribution-centers {
+    font-size: 0.78rem;
+  }
+
+  footer {
+    margin-top: 20px;
+    padding: 0 4px;
+    font-size: 0.86rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .page-header {
+    height: 120px;
+  }
+
+  .header-content {
+    grid-template-columns: 34% 66%;
+  }
+
+  .logo-jbs {
+    max-height: 40px;
+    max-width: 54%;
+    transform: translateX(-5px);
+  }
+
+  .header-text {
+    padding: 0 8px;
+  }
+
+  .header-text h1 {
+    font-size: 0.88rem;
+    line-height: 1.25;
+  }
+
+  .header-text p {
+    margin-top: 6px;
+    font-size: 0.8rem;
+  }
+
+  .organogram-action {
+    gap: 6px;
+  }
+
+  .organogram-button,
+  .download-button {
+    flex-direction: column;
+    padding: 9px 5px;
+    font-size: 0.72rem;
+  }
+
+  .button-icon {
+    width: 17px;
+    height: 17px;
+  }
+
+  section {
+    padding: 16px;
+  }
+
+  main > section h2 {
+    padding-right: 38px;
+    font-size: 1rem;
+  }
+
+  .content-toggle summary {
+    top: 12px;
+    right: 12px;
+  }
+
+  .organogram-dialog .organogram-section {
+    padding: 14px;
+  }
+
+  .dialog-close {
+    width: 34px;
+    height: 34px;
+  }
+
+  .team-member-front,
+  .team-member-back {
+    padding-right: 14px;
+    padding-left: 14px;
+  }
+}
+
+@media print {
+  body {
+    color: #000;
+    background: #fff;
+  }
+
+  .container {
+    width: 100%;
+    padding: 0;
+  }
+
+  .page-header,
+  main > section {
+    break-inside: avoid;
+    box-shadow: none;
+  }
+
+  .content-toggle:not([open]) > .toggle-content {
+    display: block;
+  }
+
+  .content-toggle summary,
+  .organogram-action,
+  .organogram-dialog,
+  .javascript-warning {
+    display: none;
+  }
+
+  footer {
+    color: #000;
   }
 }

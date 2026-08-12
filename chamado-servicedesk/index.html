@@ -8,7 +8,8 @@
       content="Diretrizes para a abertura de chamados de Suprimentos Seara CDs."
     />
     <title>Diretrizes para a abertura de chamados | Suprimentos Seara</title>
-    <link rel="icon" type="image/svg+xml" href="imagens/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="imagens/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="imagens/favicon-192.png" />
     <link rel="stylesheet" href="styles.css" />
   </head>
 
@@ -21,8 +22,9 @@
           preserveAspectRatio="none"
           aria-hidden="true"
         >
+          <rect x="150" width="850" height="200" fill="#011d5e" />
           <path
-            d="M0,0 H340 C336,55 302,143 190,200 H0 Z"
+            d="M0,0 H315 C311,55 302,143 190,200 H0 Z"
             fill="#ffffff"
           />
         </svg>
@@ -30,7 +32,7 @@
           <img src="imagens/logojbs.jfif" alt="JBS" class="logo logo-jbs" />
           <div class="header-text">
             <h1>Diretrizes para a abertura de chamados</h1>
-            <p>Suprimentos Seara CDs</p>
+            <p>Suprimentos Seara – CDs</p>
           </div>
         </div>
       </header>
@@ -41,11 +43,13 @@
           <details class="content-toggle">
             <summary aria-label="Mostrar ou ocultar orientações"></summary>
             <div class="toggle-content">
-              <p>
-                É obrigatório apresentar um memorial descritivo detalhado, com a demanda e o escopo do
-                contrato a ser firmado claramente especificados. Chamados sem um escopo claro serão
-                cancelados.
-              </p>
+              <ul>
+                <li>
+                  É obrigatório apresentar um Memorial Descritivo detalhado, com a demanda e o escopo do
+                  contrato a ser firmado claramente especificados.
+                </li>
+                <li>Chamados sem um escopo claro serão cancelados.</li>
+              </ul>
             </div>
           </details>
         </section>
@@ -60,7 +64,8 @@
                   Chamados para a contratação de serviços spot, que devem continuar seguindo o fluxo pela
                   SNAC0500;
                 </li>
-                <li>Chamados com memorial sem escopo detalhado.</li>
+                <li>Chamados com Memorial Descritivo sem escopo detalhado.</li>
+                <li>Para chamados onde o solicitante tiver um fornecedor de preferência deve ser anexado junto com o memorial descritivo o orçamento do fornecedor em questão.</li>
               </ul>
             </div>
           </details>
@@ -73,13 +78,17 @@
             <div class="toggle-content">
               <p>
                 Os fornecedores específicos indicados pelo solicitante devem estar devidamente cadastrados no
-                SPR para darmos sequência ao contrato, conforme política abaixo.
+                SPR para darmos sequência ao contrato, conforme a política apresentada abaixo.
               </p>
-              <img
-                class="supplier-policy-image"
-                src="imagens/cadastro-fornecedores.png"
-                alt="Trecho da Política de Suprimentos com as orientações para o cadastro de fornecedores"
-              />
+              <a class="supplier-policy-link" href="imagens/cadastro-fornecedores.png" target="_blank">
+                <img
+                  class="supplier-policy-image"
+                  src="imagens/cadastro-fornecedores.png"
+                  alt="Trecho da Política de Suprimentos com as orientações para o cadastro de fornecedores. Toque para ampliar."
+                  loading="lazy"
+                  decoding="async"
+                />
+              </a>
             </div>
           </details>
         </section>
@@ -92,6 +101,7 @@
                 ×
               </button>
             </div>
+            <p class="organogram-updated" data-organogram-updated></p>
             <div class="leadership" role="list" aria-label="Liderança"></div>
             <div class="organogram" role="list" aria-label="Equipe de Suprimentos"></div>
           </section>
@@ -102,13 +112,44 @@
       </main>
 
       <div class="organogram-action">
-        <button class="organogram-button" type="button" data-organogram-open>
+        <button
+          class="organogram-button"
+          type="button"
+          data-organogram-open
+          aria-label="Consultar comprador por unidade"
+          title="Consultar o comprador responsável por cada unidade"
+        >
+          <svg class="button-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M16 11a4 4 0 1 0-3.5-5.9A5 5 0 0 1 13 11h3Zm-8 0a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm0 2c-4 0-7 2-7 5v2h11v-2c0-1.8.8-3.3 2.2-4.4A12.4 12.4 0 0 0 8 13Zm8 0c-.5 0-1 0-1.5.1A6.2 6.2 0 0 1 17 18v2h6v-2c0-3-3-5-7-5Z" />
+          </svg>
           Quem é o comprador da minha unidade?
         </button>
         <a
           class="download-button"
           href="https://intranetjbs.com.br/area/Foods/Executiva-Adm.-e-Financeira/gerencia-controladoria-cds/Documents/Compras/02.%20Treinamentos%20e%20Manuais/MODELO%20MEMORIAL%20DESCRITIVO%20SIMPLES.docx"
-        >Baixar modelo de Memorial Descritivo</a>
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Abrir modelo de Memorial Descritivo"
+          title="Abrir o modelo de Memorial Descritivo em uma nova aba"
+        >
+          <svg class="button-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M11 3h2v10.2l3.6-3.6 1.4 1.4-6 6-6-6 1.4-1.4 3.6 3.6V3ZM5 19h14v2H5v-2Z" />
+          </svg>
+          Abrir modelo de Memorial Descritivo
+        </a>
+        <a
+          class="download-button"
+          href="https://intranetjbs.com.br/area/Foods/Executiva-Adm.-e-Financeira/gerencia-controladoria-cds/Documents/Compras/02.%20Treinamentos%20e%20Manuais/MANUAL%20CADASTRO%20FORNECEDOR.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Abrir manual de cadastro de fornecedores"
+          title="Abrir o manual de cadastro de fornecedores em uma nova aba"
+        >
+          <svg class="button-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 2h8l5 5v15H6V2Zm2 2v16h9V8h-4V4H8Zm7 .8V6h1.2L15 4.8ZM10 11h5v2h-5v-2Zm0 4h5v2h-5v-2Z" />
+          </svg>
+          Como cadastrar fornecedores?
+        </a>
       </div>
 
       <footer>
