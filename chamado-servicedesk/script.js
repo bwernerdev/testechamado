@@ -3,7 +3,7 @@
 const organogramUpdatedAt = '12/08/2026';
 
 const leadershipMembers = [
-  { initials: 'AB', name: 'Alex Borba', role: 'Gerente Regional de CDs' },
+  { initials: 'AB', name: 'Alex Borba', role: 'Gerente Regional de CDs', image: 'imagens/org-alex.png' },
   { initials: 'FL', name: 'Fabiano Lechinski', role: 'Coordenador Administrativo' },
 ];
 
@@ -79,7 +79,9 @@ function renderLeadership() {
     .map(
       (member) => `
       <article class="team-member leadership-member" role="listitem">
-        <div class="avatar" aria-hidden="true">${escapeHtml(member.initials)}</div>
+        <div class="avatar" aria-hidden="true">${member.image
+          ? `<img src="${escapeHtml(member.image)}" alt="" />`
+          : escapeHtml(member.initials)}</div>
         <h3>${escapeHtml(member.name)}</h3>
         <p>${escapeHtml(member.role)}</p>
       </article>`
