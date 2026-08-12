@@ -108,7 +108,7 @@ function renderOrganogram() {
             </div>
           </div>
           <div class="team-member-back">
-            <h3>${escapeHtml(member.name)}</h3>
+            <h3>Unidades atendidas</h3>
             <ul class="distribution-centers">${centers}</ul>
           </div>
         </div>
@@ -140,16 +140,13 @@ organogramDialog.addEventListener('click', (event) => {
   }
 });
 
-document.querySelectorAll('main > section').forEach((section) => {
-  const contentToggle = section.querySelector('.content-toggle');
-  if (!contentToggle) return;
+document.querySelector('.organogram').addEventListener('click', (event) => {
+  if (event.target.closest('a')) return;
 
-  section.addEventListener('click', (event) => {
-    if (event.target.closest('summary, a, button')) {
-      return;
-    }
-    contentToggle.open = !contentToggle.open;
-  });
+  const card = event.target.closest('.team-member');
+  if (card) {
+    card.classList.toggle('is-flipped');
+  }
 });
 
 renderLeadership();

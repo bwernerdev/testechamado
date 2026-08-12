@@ -40,33 +40,50 @@ section {
 }
 
 .page-header {
-  padding: 20px 28px;
+  position: relative;
+  padding: 0;
+  background: var(--heading);
+  border: 2px solid #fff;
+  border-radius: 14px;
+  overflow: hidden;
+  aspect-ratio: 5 / 1;
 }
 
 .header-content {
+  position: relative;
   display: grid;
-  grid-template-columns: 120px 1fr 120px;
-  gap: 24px;
+  grid-template-columns: 30% 1fr;
   align-items: center;
-  text-align: center;
+  width: 100%;
+  height: 100%;
 }
 
 .logo {
   display: block;
   max-width: 100%;
-  height: 70px;
+  height: auto;
   margin: 0 auto;
   object-fit: contain;
 }
 
-.logo-seara {
-  width: 110px;
-  clip-path: inset(2px 0 0);
-  margin-top: -2px;
+.logo-jbs {
+  max-height: 62%;
+  max-width: 70%;
+  width: auto;
+  height: auto;
 }
 
-.logo-jbs {
-  width: 90px;
+.header-shape {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.header-text {
+  text-align: center;
+  padding: 0 24px;
 }
 
 h1,
@@ -85,8 +102,12 @@ h1 {
 
 .page-header p {
   margin-bottom: 0;
-  color: var(--muted-text);
+  color: #fff;
   font-size: 1.15rem;
+}
+
+.page-header h1 {
+  color: #fff;
 }
 
 main {
@@ -100,7 +121,7 @@ main {
   flex-wrap: wrap;
   justify-content: center;
   gap: 12px;
-  margin-top: 18px;
+  margin-top: 32px;
   text-align: center;
 }
 
@@ -113,7 +134,7 @@ main {
   border: 0;
   border-radius: 8px;
   color: #fff;
-  background: var(--primary);
+  background: #011d5e;
   box-shadow: 0 3px 8px rgba(21, 42, 28, 0.2);
   cursor: pointer;
   font: inherit;
@@ -124,7 +145,7 @@ main {
 .organogram-button:hover,
 .download-button:hover {
   color: #fff;
-  background: var(--primary-dark);
+  background: #001747;
 }
 
 section {
@@ -146,7 +167,7 @@ main > section {
 
 h2 {
   margin-bottom: 8px;
-  color: var(--heading);
+  color: #011d5e;
   font-size: 1.2rem;
 }
 
@@ -173,8 +194,6 @@ section p {
   cursor: pointer;
   font-weight: 700;
   list-style: none;
-  opacity: 0;
-  pointer-events: none;
   transition: opacity 180ms ease;
 }
 
@@ -195,24 +214,19 @@ section p {
   content: "−";
 }
 
-@media (hover: hover) {
-  main > section:hover .content-toggle summary {
-    opacity: 1;
-    pointer-events: auto;
-  }
-}
-
-.content-toggle summary:focus-visible {
-  opacity: 1;
-  pointer-events: auto;
-}
-
 .toggle-content {
   padding-top: 4px;
 }
 
 .toggle-content p:last-child {
   margin-bottom: 0;
+}
+
+.supplier-policy-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-top: 16px;
 }
 
 .organogram-section {
@@ -345,8 +359,7 @@ section p {
   transform-style: preserve-3d;
 }
 
-.team-member:hover .team-member-content,
-.team-member:focus-within .team-member-content {
+.team-member.is-flipped .team-member-content {
   transform: rotateY(180deg);
 }
 
@@ -408,7 +421,7 @@ section p {
 
 .contact-details {
   margin-bottom: 12px;
-  color: var(--heading);
+  color: var(--text);
   font-size: 0.72rem;
   line-height: 1.4;
   text-align: center;
@@ -419,6 +432,7 @@ section p {
 }
 
 .contact-details a {
+  color: inherit;
   overflow-wrap: anywhere;
   font-weight: 700;
 }
@@ -427,7 +441,7 @@ section p {
   margin: 0;
   padding: 12px 0 0;
   border-top: 1px solid var(--primary);
-  color: var(--heading);
+  color: #000;
   font-size: 0.72rem;
   line-height: 1.45;
   list-style: none;
@@ -459,6 +473,16 @@ footer p {
   margin-bottom: 0;
 }
 
+.javascript-warning {
+  margin: 24px 0 0;
+  padding: 12px;
+  border: 1px solid #b7791f;
+  border-radius: 8px;
+  color: #744210;
+  background: #fffaf0;
+  text-align: center;
+}
+
 a {
   color: var(--heading);
   font-weight: 700;
@@ -473,29 +497,61 @@ a:focus-visible {
   outline-offset: 3px;
 }
 
+button:focus-visible,
+summary:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .team-member-content {
+    transition: none;
+  }
+}
+
 @media (max-width: 640px) {
   .container {
     width: min(100% - 24px, 900px);
     padding: 16px 0;
   }
 
-  .page-header,
   section {
     padding: 20px;
   }
 
+  .page-header {
+    padding: 0;
+    aspect-ratio: auto;
+    min-height: 130px;
+  }
+
   .header-content {
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
+    grid-template-columns: 40% 60%;
+    gap: 0;
   }
 
-  .header-content > div {
-    grid-column: 1 / -1;
-    grid-row: 1;
+  .header-text {
+    padding: 0 12px;
   }
 
-  .logo {
-    height: 52px;
+  .logo-jbs {
+    max-height: 48px;
+    max-width: 80%;
+  }
+
+  .header-text h1 {
+    font-size: 0.95rem;
+  }
+
+  .header-text p {
+    font-size: 0.85rem;
   }
 
   .organogram {
