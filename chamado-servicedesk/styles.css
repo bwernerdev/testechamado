@@ -79,10 +79,11 @@ section {
 }
 
 .logo-jbs {
-  max-height: 62%;
-  max-width: 70%;
+  max-height: 70%;
+  max-width: 78%;
   width: auto;
   height: auto;
+  transform: translateX(-26px);
 }
 
 .header-shape {
@@ -694,9 +695,9 @@ summary:focus-visible {
   }
 
   .logo-jbs {
-    max-height: 48px;
-    max-width: 58%;
-    transform: translateX(-6px);
+    max-height: 54px;
+    max-width: 64%;
+    transform: translateX(-24px);
   }
 
   .header-text h1 {
@@ -796,9 +797,9 @@ summary:focus-visible {
   }
 
   .logo-jbs {
-    max-height: 40px;
-    max-width: 54%;
-    transform: translateX(-5px);
+    max-height: 45px;
+    max-width: 60%;
+    transform: translateX(-20px);
   }
 
   .header-text {
