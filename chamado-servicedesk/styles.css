@@ -78,7 +78,7 @@ section {
   object-fit: contain;
 }
 
-.logo-jbs {
+.logo-controladoria {
   max-height: 70%;
   max-width: 78%;
   width: auto;
@@ -694,7 +694,7 @@ summary:focus-visible {
     padding: 0 12px;
   }
 
-  .logo-jbs {
+  .logo-controladoria {
     max-height: 54px;
     max-width: 64%;
     transform: translateX(-24px);
@@ -796,7 +796,7 @@ summary:focus-visible {
     grid-template-columns: 34% 66%;
   }
 
-  .logo-jbs {
+  .logo-controladoria {
     max-height: 45px;
     max-width: 60%;
     transform: translateX(-20px);
