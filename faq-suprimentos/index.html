@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Perguntas frequentes da área de Suprimentos dos CDs da Seara."
+    />
+    <title>FAQ Suprimentos | Seara CDs</title>
+    <link rel="icon" type="image/webp" href="imagens/favicon.webp?v=1" />
+    <link rel="apple-touch-icon" sizes="180x180" href="imagens/apple-touch-icon.png?v=1" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <header class="page-header">
+        <svg
+          class="header-shape"
+          viewBox="0 0 1000 200"
+          preserveAspectRatio="none"
+          aria-hidden="true"
+        >
+          <rect x="150" width="850" height="200" fill="#011d5e" />
+          <path d="M0,0 H315 C311,55 302,143 190,200 H0 Z" fill="#ffffff" />
+        </svg>
+        <div class="header-content">
+          <img
+            src="imagens/logo-controladoria-cds.webp"
+            alt="Logo da Controladoria Administrativa CDS"
+            class="logo logo-controladoria"
+            width="1402"
+            height="1122"
+          />
+          <div class="header-text">
+            <h1>FAQ Suprimentos</h1>
+            <p>Perguntas frequentes — CDs</p>
+          </div>
+        </div>
+      </header>
+
+      <main>
+        <div class="faq-toolbar" aria-label="Ferramentas do FAQ">
+          <div class="search-field">
+            <label for="faq-search">Buscar uma pergunta</label>
+            <div class="search-input-wrap">
+              <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m20.7 19.3-4.2-4.2a7.5 7.5 0 1 0-1.4 1.4l4.2 4.2 1.4-1.4ZM5 10.5a5.5 5.5 0 1 1 11 0 5.5 5.5 0 0 1-11 0Z" />
+              </svg>
+              <input
+                id="faq-search"
+                type="search"
+                placeholder="Digite para pesquisar..."
+                autocomplete="off"
+                data-faq-search
+              />
+            </div>
+          </div>
+          <button class="expand-button" type="button" data-expand-all aria-pressed="false">
+            Expandir todas
+          </button>
+        </div>
+
+        <p class="search-status" data-search-status aria-live="polite"></p>
+        <div class="faq-list" data-faq-list></div>
+        <p class="empty-state" data-empty-state hidden>
+          Nenhuma pergunta encontrada. Tente usar outros termos.
+        </p>
+
+        <dialog class="organogram-dialog" id="organogram-dialog" aria-labelledby="organograma">
+          <section class="organogram-section">
+            <div class="dialog-heading">
+              <h2 id="organograma">Organograma de Suprimentos</h2>
+              <button
+                class="dialog-close"
+                type="button"
+                data-organogram-close
+                aria-label="Fechar organograma"
+              >
+                ×
+              </button>
+            </div>
+            <p class="organogram-updated">
+              Dados atualizados em <time data-organogram-updated></time>
+            </p>
+            <div class="leadership" role="list" aria-label="Liderança"></div>
+            <div class="organogram" role="list" aria-label="Equipe de Suprimentos"></div>
+          </section>
+        </dialog>
+        <noscript>
+          <p class="javascript-warning">
+            Ative o JavaScript para consultar o organograma de Suprimentos.
+          </p>
+        </noscript>
+      </main>
+
+      <div class="organogram-action" aria-label="Consulta de Suprimentos">
+        <button
+          class="organogram-button"
+          type="button"
+          data-organogram-open
+          aria-haspopup="dialog"
+          aria-controls="organogram-dialog"
+          aria-label="Consultar comprador por unidade"
+          title="Consultar o comprador responsável por cada unidade"
+        >
+          <svg class="button-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M16 11a4 4 0 1 0-3.5-5.9A5 5 0 0 1 13 11h3Zm-8 0a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm0 2c-4 0-7 2-7 5v2h11v-2c0-1.8.8-3.3 2.2-4.4A12.4 12.4 0 0 0 8 13Zm8 0c-.5 0-1 0-1.5.1A6.2 6.2 0 0 1 17 18v2h6v-2c0-3-3-5-7-5Z" />
+          </svg>
+          Quem é o comprador da minha unidade?
+        </button>
+      </div>
+
+      <footer>
+        <p>
+          Para conhecer a área de Suprimentos, sua estrutura e atribuições, consulte a
+          <a
+            href="https://intranetjbs.com.br/area/Foods/Executiva-Adm.-e-Financeira/gerencia-controladoria-cds/Documents/Forms/AllItems.aspx?RootFolder=%2Farea%2FFoods%2FExecutiva%2DAdm%2E%2De%2DFinanceira%2Fgerencia%2Dcontroladoria%2Dcds%2FDocuments%2FCompras"
+            target="_blank"
+            rel="noopener noreferrer"
+          >Intranet</a>.
+        </p>
+      </footer>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
