@@ -43,78 +43,13 @@ const faqItems = [
   },
 ];
 
-const organogramUpdatedAt = '2026-08-12';
+const faqUpdatedAt = '2026-08-14';
 
-const leadershipMembers = [
-  { initials: 'AB', name: 'Alex Borba', role: 'Gerente Regional de CDs', image: 'imagens/org-alex.webp' },
-  {
-    initials: 'FL',
-    name: 'Fabiano Lechinski',
-    role: 'Coordenador Administrativo',
-    image: 'imagens/org-fabiano.webp',
-  },
-];
-
-const teamMembers = [
-  {
-    initials: 'TM',
-    name: 'Thayane Morlus',
-    order: 2,
-    ramal: '47 3241 8564 (8291 - 8564)',
-    email: 'thayane.afonso@seara.com.br',
-    image: 'imagens/org-thayane.webp',
-    centers: [
-      '178.692 — Campinas (CD)',
-      '178.963 — Ribeirão Preto (CD)',
-      '178.697 — São Paulo (CD)',
-      '178.892 — SP Anhanguera (CD)',
-      '30.901 — Campinas (CD)',
-      '30.603 — Duque de Caxias (CD)',
-    ],
-  },
-  {
-    initials: 'BW',
-    name: 'Bruno Werner',
-    order: 4,
-    ramal: '47 3241 8515 (8291 - 8515)',
-    email: 'bruno.werner@seara.com.br',
-    image: 'imagens/org-bruno.webp',
-    centers: [
-      '30.570 — Itajaí (Armazém)',
-      '30.572 — Itajaí (Fatiados)',
-      '30.573 — Itajaí (CD)',
-      '30.733 — Cambé (CD)',
-    ],
-  },
-  {
-    initials: 'SP',
-    name: 'Sandro Pereira',
-    order: 1,
-    ramal: '47 3241 1116 (8291 - 1116)',
-    email: 'sandro.pereira@seara.com.br',
-    image: 'imagens/org-sandro.webp',
-    centers: ['Atendimento e suporte à equipe de Compras.'],
-  },
-  {
-    initials: 'VC',
-    name: 'Vitor Cruz',
-    order: 3,
-    ramal: '47 3241 1174 (8291 - 1174)',
-    email: 'vitor.antunes@seara.com.br',
-    image: 'imagens/org-vitor.webp',
-    compact: true,
-    centers: [
-      '178.676 — Cabo Santo Agostinho (CD)',
-      '178.356 — Aquiraz (CD)',
-      '178.675 — Ribeirão das Neves (CD)',
-      '30.910 — Salvador (CD)',
-      '30.965 — Vitória da Conquista (CD)',
-      '30.458 — Nova Santa Rita (CD)',
-      '30.943 — Ribeirão Preto (CD)',
-      '30.770 — Canoas (ADM)',
-    ],
-  },
-];
+const {
+  updatedAt: organogramUpdatedAt,
+  leadershipMembers,
+  teamMembers,
+} = globalThis.organogramData;
 
 function escapeHtml(value) {
   return String(value).replace(/[&<>"']/g, (char) => ({
@@ -139,15 +74,16 @@ function normalizeText(value) {
   return String(value)
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
-    .toLowerCase()
-    .trim();
+    .toLowerCase();
 }
 
 const faqList = document.querySelector('[data-faq-list]');
 const faqSearch = document.querySelector('[data-faq-search]');
 const searchStatus = document.querySelector('[data-search-status]');
+const faqUpdatedText = document.querySelector('[data-faq-updated]');
 const emptyState = document.querySelector('[data-empty-state]');
 const expandAllButton = document.querySelector('[data-expand-all]');
+const backToTopButton = document.querySelector('[data-back-to-top]');
 let allowMultipleOpen = false;
 
 function renderFaq() {
@@ -178,6 +114,52 @@ function visibleCards() {
   return [...(faqList?.querySelectorAll('.faq-card') ?? [])].filter((card) => !card.hidden);
 }
 
+function highlightText(element, text, query) {
+  element.textContent = '';
+  if (!query) {
+    element.textContent = text;
+    return;
+  }
+
+  let normalizedText = '';
+  const sourceIndexes = [];
+  [...text].forEach((character, sourceIndex) => {
+    const normalizedCharacter = normalizeText(character);
+    normalizedText += normalizedCharacter;
+    sourceIndexes.push(...Array(normalizedCharacter.length).fill(sourceIndex));
+  });
+
+  const normalizedQuery = normalizeText(query);
+  const ranges = [];
+  let searchFrom = 0;
+  let matchIndex = normalizedText.indexOf(normalizedQuery, searchFrom);
+
+  while (matchIndex !== -1) {
+    const start = sourceIndexes[matchIndex];
+    const end = sourceIndexes[matchIndex + normalizedQuery.length - 1] + 1;
+    ranges.push([start, end]);
+    searchFrom = matchIndex + normalizedQuery.length;
+    matchIndex = normalizedText.indexOf(normalizedQuery, searchFrom);
+  }
+
+  if (ranges.length === 0) {
+    element.textContent = text;
+    return;
+  }
+
+  const fragment = document.createDocumentFragment();
+  let cursor = 0;
+  ranges.forEach(([start, end]) => {
+    fragment.append(document.createTextNode(text.slice(cursor, start)));
+    const mark = document.createElement('mark');
+    mark.textContent = text.slice(start, end);
+    fragment.append(mark);
+    cursor = end;
+  });
+  fragment.append(document.createTextNode(text.slice(cursor)));
+  element.append(fragment);
+}
+
 function updateExpandButton() {
   if (!expandAllButton) return;
 
@@ -191,7 +173,7 @@ function updateExpandButton() {
 function filterFaq() {
   if (!faqList || !faqSearch) return;
 
-  const query = normalizeText(faqSearch.value);
+  const query = normalizeText(faqSearch.value).trim();
   let matches = 0;
 
   faqList.querySelectorAll('.faq-card').forEach((card, index) => {
@@ -199,6 +181,8 @@ function filterFaq() {
     const searchableText = normalizeText(`${item.title} ${item.content}`);
     const isMatch = !query || searchableText.includes(query);
     card.hidden = !isMatch;
+    highlightText(card.querySelector('.question-title'), item.title, query);
+    highlightText(card.querySelector('.toggle-content p'), item.content, query);
     if (isMatch) matches += 1;
   });
 
@@ -260,6 +244,23 @@ expandAllButton?.addEventListener('click', () => {
 });
 
 filterFaq();
+
+if (faqUpdatedText) {
+  const [year, month, day] = faqUpdatedAt.split('-');
+  faqUpdatedText.dateTime = faqUpdatedAt;
+  faqUpdatedText.textContent = `${day}/${month}/${year}`;
+}
+
+function updateBackToTopButton() {
+  backToTopButton?.classList.toggle('is-visible', window.scrollY > 500);
+}
+
+window.addEventListener('scroll', updateBackToTopButton, { passive: true });
+backToTopButton?.addEventListener('click', () => {
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+});
+updateBackToTopButton();
 
 function renderAvatar(member) {
   const initials = escapeHtml(member.initials);
@@ -355,6 +356,9 @@ const organogramDialog = document.querySelector('#organogram-dialog');
 const openOrganogramButton = document.querySelector('[data-organogram-open]');
 const closeOrganogramButton = document.querySelector('[data-organogram-close]');
 const organogramUpdatedText = document.querySelector('[data-organogram-updated]');
+const helpDialog = document.querySelector('#help-dialog');
+const openHelpButton = document.querySelector('[data-help-open]');
+const closeHelpButton = document.querySelector('[data-help-close]');
 
 if (organogramUpdatedText) {
   const [year, month, day] = organogramUpdatedAt.split('-');
@@ -391,6 +395,37 @@ if (organogramDialog && openOrganogramButton && closeOrganogramButton) {
         organogramDialog.removeAttribute('open');
         resetTeamMembers();
       }
+    }
+  });
+}
+
+if (helpDialog && openHelpButton && closeHelpButton) {
+  openHelpButton.addEventListener('click', () => {
+    if (typeof helpDialog.showModal === 'function') {
+      helpDialog.showModal();
+      return;
+    }
+
+    helpDialog.setAttribute('open', '');
+    helpDialog.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+
+  closeHelpButton.addEventListener('click', () => {
+    if (typeof helpDialog.close === 'function') {
+      helpDialog.close();
+      return;
+    }
+
+    helpDialog.removeAttribute('open');
+  });
+
+  helpDialog.addEventListener('click', (event) => {
+    if (event.target !== helpDialog) return;
+
+    if (typeof helpDialog.close === 'function') {
+      helpDialog.close();
+    } else {
+      helpDialog.removeAttribute('open');
     }
   });
 }

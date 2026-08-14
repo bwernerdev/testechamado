@@ -28,6 +28,7 @@
 }
 
 body {
+  position: relative;
   margin: 0;
   font-family: Arial, system-ui, -apple-system, "Segoe UI", sans-serif;
   line-height: 1.55;
@@ -35,7 +36,41 @@ body {
   background: var(--page-background);
 }
 
+body::before,
+body::after {
+  position: fixed;
+  z-index: 0;
+  content: "";
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+body::before {
+  top: -180px;
+  left: -220px;
+  width: 520px;
+  height: 520px;
+  border: 70px solid rgba(1, 29, 94, 0.035);
+  box-shadow: 0 0 0 55px rgba(32, 32, 128, 0.018);
+}
+
+body::after {
+  right: -190px;
+  bottom: -230px;
+  width: 480px;
+  height: 480px;
+  background: radial-gradient(
+    circle at center,
+    rgba(32, 32, 128, 0.045) 0 28%,
+    transparent 29% 45%,
+    rgba(1, 29, 94, 0.025) 46% 62%,
+    transparent 63%
+  );
+}
+
 .container {
+  position: relative;
+  z-index: 1;
   width: min(100% - 32px, 900px);
   min-height: 100vh;
   margin: 0 auto;
@@ -211,11 +246,30 @@ main {
   opacity: 0.55;
 }
 
-.search-status {
-  min-height: 1.3em;
+.faq-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
   margin: 0 4px;
   color: var(--muted-text);
   font-size: 0.86rem;
+}
+
+.search-status,
+.faq-updated {
+  min-height: 1.3em;
+  margin: 0;
+}
+
+.faq-updated {
+  text-align: right;
+}
+
+.faq-list mark {
+  padding: 0 2px;
+  border-radius: 3px;
+  color: inherit;
+  background: #ffe083;
 }
 
 .faq-list {
@@ -235,13 +289,14 @@ main {
 
 .organogram-action {
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
   margin-top: 32px;
   text-align: center;
 }
 
-.organogram-button {
+.organogram-button,
+.question-help-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -264,7 +319,8 @@ main {
   fill: currentColor;
 }
 
-.organogram-button:hover {
+.organogram-button:hover,
+.question-help-button:hover {
   color: #fff;
   background: #001747;
 }
@@ -386,6 +442,78 @@ section p {
 
 .organogram-dialog::backdrop {
   background: rgba(18, 32, 22, 0.58);
+}
+
+.help-dialog {
+  width: min(430px, calc(100% - 32px));
+  padding: 0;
+  border: 0;
+  border-radius: 14px;
+  background: transparent;
+}
+
+.help-dialog::backdrop {
+  background: rgba(18, 32, 22, 0.58);
+}
+
+.help-card {
+  position: relative;
+  padding: 32px 30px 28px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+
+.help-card-icon {
+  width: 48px;
+  height: 48px;
+  margin: 18px 0 12px;
+  fill: var(--heading);
+}
+
+.help-card .dialog-heading h2 {
+  margin-bottom: 0;
+  padding: 0;
+  font-size: 1.25rem;
+  text-align: left;
+}
+
+.help-card p {
+  margin-bottom: 22px;
+  color: var(--muted-text);
+}
+
+.help-card .help-checklist-title {
+  margin-bottom: 8px;
+  color: var(--text);
+  font-weight: 700;
+  text-align: left;
+}
+
+.help-checklist {
+  margin: 0 0 22px;
+  padding-left: 22px;
+  color: var(--muted-text);
+  text-align: left;
+}
+
+.help-email-button {
+  display: inline-flex;
+  min-height: 46px;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 18px;
+  border-radius: 8px;
+  color: #fff;
+  background: var(--heading);
+  text-decoration: none;
+}
+
+.help-email-button:hover {
+  color: #fff;
+  background: #001747;
 }
 
 .organogram-dialog .organogram-section {
@@ -680,6 +808,46 @@ footer p {
   margin-bottom: 0;
 }
 
+.back-to-top {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 14px;
+  border: 0;
+  border-radius: 999px;
+  color: #fff;
+  background: var(--heading);
+  box-shadow: 0 5px 16px rgba(1, 29, 94, 0.28);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 700;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(12px);
+  transition: opacity 180ms ease, transform 180ms ease, visibility 180ms ease;
+}
+
+.back-to-top.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.back-to-top:hover {
+  background: #001747;
+}
+
+.back-to-top svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
 .javascript-warning {
   margin: 24px 0 0;
   padding: 12px;
@@ -735,6 +903,11 @@ summary:focus-visible {
 }
 
 @media (max-width: 640px) {
+  body::before,
+  body::after {
+    display: none;
+  }
+
   .container {
     width: min(100% - 24px, 900px);
     padding: 16px 0;
@@ -757,6 +930,15 @@ summary:focus-visible {
 
   .faq-list {
     gap: 14px;
+  }
+
+  .faq-meta {
+    display: grid;
+    gap: 3px;
+  }
+
+  .faq-updated {
+    text-align: left;
   }
 
   section {
@@ -812,11 +994,13 @@ summary:focus-visible {
 
   .organogram-action {
     display: grid;
+    grid-template-columns: 1fr;
     gap: 10px;
     margin-top: 22px;
   }
 
-  .organogram-button {
+  .organogram-button,
+  .question-help-button {
     height: 100%;
     width: 100%;
     min-height: 48px;
@@ -886,6 +1070,21 @@ summary:focus-visible {
     padding: 0 4px;
     font-size: 0.86rem;
   }
+
+  .back-to-top {
+    right: 14px;
+    bottom: 14px;
+    padding: 10px;
+  }
+
+  .back-to-top span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
 }
 
 @media (max-width: 420px) {
@@ -921,7 +1120,8 @@ summary:focus-visible {
     gap: 6px;
   }
 
-  .organogram-button {
+  .organogram-button,
+  .question-help-button {
     flex-direction: column;
     padding: 9px 5px;
     font-size: 0.72rem;
@@ -950,6 +1150,23 @@ summary:focus-visible {
     padding: 14px;
   }
 
+  .help-dialog {
+    width: calc(100% - 24px);
+  }
+
+  .help-card {
+    padding: 28px 18px 22px;
+  }
+
+  .help-card .dialog-heading h2 {
+    padding: 0;
+    font-size: 1.1rem;
+  }
+
+  .help-email-button {
+    width: 100%;
+  }
+
   .dialog-close {
     width: 34px;
     height: 34px;
@@ -967,7 +1184,8 @@ summary:focus-visible {
     padding: 10px;
   }
 
-  .organogram-button {
+  .organogram-button,
+  .question-help-button {
     padding: 8px 3px;
     font-size: 0.66rem;
   }
@@ -1011,6 +1229,11 @@ summary:focus-visible {
     background: #fff;
   }
 
+  body::before,
+  body::after {
+    display: none;
+  }
+
   .container {
     width: 100%;
     padding: 0;
@@ -1029,6 +1252,8 @@ summary:focus-visible {
   .content-toggle summary,
   .organogram-action,
   .organogram-dialog,
+  .help-dialog,
+  .back-to-top,
   .javascript-warning {
     display: none;
   }

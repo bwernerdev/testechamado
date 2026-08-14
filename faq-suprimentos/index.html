@@ -62,7 +62,12 @@
           </button>
         </div>
 
-        <p class="search-status" data-search-status aria-live="polite"></p>
+        <div class="faq-meta">
+          <p class="search-status" data-search-status aria-live="polite"></p>
+          <p class="faq-updated">
+            FAQ atualizado em <time data-faq-updated></time>
+          </p>
+        </div>
         <div class="faq-list" data-faq-list></div>
         <p class="empty-state" data-empty-state hidden>
           Nenhuma pergunta encontrada. Tente usar outros termos.
@@ -88,6 +93,41 @@
             <div class="organogram" role="list" aria-label="Equipe de Suprimentos"></div>
           </section>
         </dialog>
+
+        <dialog class="help-dialog" id="help-dialog" aria-labelledby="help-dialog-title">
+          <div class="help-card">
+            <div class="dialog-heading">
+              <h2 id="help-dialog-title">Não encontrou sua dúvida?</h2>
+              <button
+                class="dialog-close"
+                type="button"
+                data-help-close
+                aria-label="Fechar orientação"
+              >
+                ×
+              </button>
+            </div>
+            <svg class="help-card-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16Zm-.9-5.8h2v2h-2v-2Zm.1-7.4c.4-.4 1-.6 1.6-.6 1.4 0 2.5 1 2.5 2.4 0 1.1-.5 1.7-1.4 2.4-.6.5-.8.8-.8 1.5h-2c0-1.5.5-2.1 1.5-2.9.6-.5.7-.7.7-1 0-.4-.3-.6-.7-.6-.5 0-.8.3-1.2.9L9.8 7.8c.4-.7.8-1.1 1.4-1.5Z" />
+            </svg>
+            <p>
+              Entre em contato com a equipe de Compras. Descreva sua dúvida e, se possível,
+              informe sua unidade para facilitar o atendimento.
+            </p>
+            <p class="help-checklist-title">Inclua estas informações no e-mail:</p>
+            <ul class="help-checklist">
+              <li>Unidade</li>
+              <li>Tema da dúvida</li>
+              <li>Descrição</li>
+            </ul>
+            <a
+              class="help-email-button"
+              href="mailto:sandro.pereira@seara.com.br?subject=D%C3%9AVIDA%20N%C3%83O%20LOCALIZADA%20NO%20FAQ"
+            >
+              Enviar minha dúvida por e-mail
+            </a>
+          </div>
+        </dialog>
         <noscript>
           <p class="javascript-warning">
             Ative o JavaScript para consultar o organograma de Suprimentos.
@@ -110,6 +150,19 @@
           </svg>
           Quem é o comprador da minha unidade?
         </button>
+        <button
+          class="question-help-button"
+          type="button"
+          data-help-open
+          aria-haspopup="dialog"
+          aria-controls="help-dialog"
+          title="Ver como enviar uma dúvida para a equipe de Compras"
+        >
+          <svg class="button-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 2a9 9 0 0 0-9 9c0 2.2.8 4.2 2.2 5.8L4 22l5.2-2.1c.9.2 1.8.4 2.8.4a9.2 9.2 0 0 0 0-18.3Zm0 16.3c-.9 0-1.8-.2-2.6-.5l-.4-.1-2.2.9.5-2.3-.3-.4A7 7 0 1 1 12 18.3Zm-.9-4.1h2v2h-2v-2Zm.1-7.4c.4-.4 1-.6 1.6-.6 1.4 0 2.5 1 2.5 2.4 0 1.1-.5 1.7-1.4 2.4-.6.5-.8.8-.8 1.5h-2c0-1.5.5-2.1 1.5-2.9.6-.5.7-.7.7-1 0-.4-.3-.6-.7-.6-.5 0-.8.3-1.2.9L9.8 7.8c.4-.7.8-1.1 1.4-1.5Z" />
+          </svg>
+          Não localizei minha dúvida, o que fazer?
+        </button>
       </div>
 
       <footer>
@@ -123,6 +176,13 @@
         </p>
       </footer>
     </div>
+    <button class="back-to-top" type="button" data-back-to-top aria-label="Voltar ao topo">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="m12 5-7 7 1.4 1.4 4.6-4.6V20h2V8.8l4.6 4.6L19 12l-7-7Z" />
+      </svg>
+      <span>Topo</span>
+    </button>
+    <script src="organogram-data.js"></script>
     <script src="script.js"></script>
   </body>
 </html>
