@@ -1,9 +1,0 @@
-#!/bin/sh
-
-repo_root="$(git rev-parse --show-toplevel)" || exit 1
-cd "$repo_root" || exit 1
-
-if git diff --cached -U0 -- faq-suprimentos/script.js | grep -E '^[+-].*(title|content):' >/dev/null; then
-  node faq-suprimentos/scripts/update-faq-date.js || exit 1
-  git add -- faq-suprimentos/script.js || exit 1
-fi
